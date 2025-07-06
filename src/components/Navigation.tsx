@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home as HomeIcon, Languages } from "lucide-react";
+import { Menu, X, Home as HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -63,12 +63,13 @@ const Navigation = () => {
             </Link>
             <Button
               variant="outline"
-              size="icon"
               onClick={toggleLanguage}
-              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white px-3 py-2 h-10 min-w-[60px]"
               title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             >
-              <Languages className="h-4 w-4" />
+              <span className="text-sm font-medium">
+                {language === 'en' ? 'En-Np' : 'Np-En'}
+              </span>
             </Button>
           </div>
 
@@ -118,8 +119,9 @@ const Navigation = () => {
                   }}
                   className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
                 >
-                  <Languages className="mr-2 h-4 w-4" />
-                  {language === 'en' ? 'नेपाली' : 'English'}
+                  <span className="text-sm font-medium">
+                    {language === 'en' ? 'En-Np' : 'Np-En'}
+                  </span>
                 </Button>
               </div>
             </div>

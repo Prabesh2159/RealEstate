@@ -17,7 +17,7 @@ const Index = () => {
   const featuredProperties = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
       title: "Modern Family Home",
       location: "Downtown, City Center",
       price: "$450,000",
@@ -27,7 +27,7 @@ const Index = () => {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
+      image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
       title: "Luxury Apartment",
       location: "Uptown District",
       price: "$680,000",
@@ -37,13 +37,43 @@ const Index = () => {
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
+      image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
       title: "Cozy Cottage",
       location: "Suburban Area",
       price: "$320,000",
       beds: 2,
       baths: 1,
       sqft: "1,400 sq ft"
+    },
+    {
+      id: 4,
+      image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
+      title: "Executive Villa",
+      location: "Premium Location",
+      price: "$850,000",
+      beds: 4,
+      baths: 3,
+      sqft: "3,200 sq ft"
+    },
+    {
+      id: 5,
+      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      title: "Contemporary House",
+      location: "Residential Area",
+      price: "$520,000",
+      beds: 3,
+      baths: 2,
+      sqft: "2,400 sq ft"
+    },
+    {
+      id: 6,
+      image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
+      title: "Garden View Apartment",
+      location: "Green District",
+      price: "$390,000",
+      beds: 2,
+      baths: 1,
+      sqft: "1,600 sq ft"
     }
   ];
 
@@ -53,7 +83,12 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative h-[600px] bg-gradient-to-r from-brand-green to-brand-blue flex items-center justify-center">
-        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-blend-overlay bg-black/40"
+          style={{
+            backgroundImage: 'url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6")'
+          }}
+        ></div>
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">{t('home.hero.title')}</h1>
           <p className="text-xl mb-8">{t('home.hero.subtitle')}</p>
@@ -149,7 +184,13 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Link to="/buy" className="group">
               <Card className="h-64 relative overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-3">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-green to-green-700 group-hover:from-green-600 group-hover:to-green-800 transition-all duration-300"></div>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-blend-overlay"
+                  style={{
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1560518883-ce09059eeffa")'
+                  }}
+                ></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-green/90 to-green-700/90 group-hover:from-green-600/90 group-hover:to-green-800/90 transition-all duration-300"></div>
                 <CardContent className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center p-8">
                   <Home className="h-16 w-16 mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-2xl font-bold mb-3">{t('home.action.buy.title')}</h3>
@@ -160,7 +201,13 @@ const Index = () => {
 
             <Link to="/sell" className="group">
               <Card className="h-64 relative overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-3">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-blue-700 group-hover:from-blue-600 group-hover:to-blue-800 transition-all duration-300"></div>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-blend-overlay"
+                  style={{
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136")'
+                  }}
+                ></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/90 to-blue-700/90 group-hover:from-blue-600/90 group-hover:to-blue-800/90 transition-all duration-300"></div>
                 <CardContent className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center p-8">
                   <DollarSign className="h-16 w-16 mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-2xl font-bold mb-3">{t('home.action.sell.title')}</h3>
@@ -171,7 +218,13 @@ const Index = () => {
 
             <Link to="/rent" className="group">
               <Card className="h-64 relative overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-3">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 group-hover:from-purple-600 group-hover:to-purple-800 transition-all duration-300"></div>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-blend-overlay"
+                  style={{
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7")'
+                  }}
+                ></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/90 to-purple-700/90 group-hover:from-purple-600/90 group-hover:to-purple-800/90 transition-all duration-300"></div>
                 <CardContent className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center p-8">
                   <Users className="h-16 w-16 mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-2xl font-bold mb-3">{t('home.action.rent.title')}</h3>
