@@ -25,13 +25,17 @@ const Navigation = () => {
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          {/* Logo and Company Name */}
+          <Link to="/" className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/7258bb42-1fa4-40c2-9b13-7f5d1195fb18.png" 
               alt="Real Estate Crafters Logo" 
               className="h-10 w-auto"
             />
+            <div className="flex flex-col">
+              <span className="text-brand-green font-bold text-lg leading-tight">Real Estate Crafters</span>
+              <span className="text-brand-blue text-xs font-medium leading-tight">International Private Limited</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
