@@ -1,22 +1,24 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home as HomeIcon } from "lucide-react";
+import { Menu, X, Home as HomeIcon, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { language, toggleLanguage, t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Buy", path: "/buy" },
-    { name: "Sell", path: "/sell" },
-    { name: "Rent", path: "/rent" },
-    { name: "Repairing", path: "/repairing" },
-    { name: "Contact", path: "/contact" },
+    { name: t('nav.home'), path: "/" },
+    { name: t('nav.buy'), path: "/buy" },
+    { name: t('nav.sell'), path: "/sell" },
+    { name: t('nav.rent'), path: "/rent" },
+    { name: t('nav.repairing'), path: "/repairing" },
+    { name: t('nav.contact'), path: "/contact" },
   ];
 
   return (
@@ -25,8 +27,11 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <HomeIcon className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-800">Home Haven</span>
+            <img 
+              src="/lovable-uploads/7258bb42-1fa4-40c2-9b13-7f5d1195fb18.png" 
+              alt="Real Estate Crafters Logo" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -35,8 +40,8 @@ const Navigation = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 ${
-                  isActive(link.path) ? "text-blue-600 border-b-2 border-blue-600" : ""
+                className={`text-gray-600 hover:text-brand-green font-medium transition-colors duration-200 ${
+                  isActive(link.path) ? "text-brand-green border-b-2 border-brand-green" : ""
                 }`}
               >
                 {link.name}
@@ -44,25 +49,34 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Login/Register Buttons */}
+          {/* Login/Register/Language Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                Login
+              <Button variant="outline" className="border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
+                {t('nav.login')}
               </Button>
             </Link>
             <Link to="/register">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                Register
+              <Button className="bg-brand-green hover:bg-brand-green/90">
+                {t('nav.register')}
               </Button>
             </Link>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleLanguage}
+              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+              title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
+            >
+              <Languages className="h-4 w-4" />
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-600 hover:text-blue-600"
+              className="text-gray-600 hover:text-brand-green"
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -77,8 +91,8 @@ const Navigation = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 ${
-                    isActive(link.path) ? "text-blue-600" : ""
+                  className={`text-gray-600 hover:text-brand-green font-medium transition-colors duration-200 ${
+                    isActive(link.path) ? "text-brand-green" : ""
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -87,15 +101,26 @@ const Navigation = () => {
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t">
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                    Login
+                  <Button variant="outline" className="w-full border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
+                    {t('nav.login')}
                   </Button>
                 </Link>
                 <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    Register
+                  <Button className="w-full bg-brand-green hover:bg-brand-green/90">
+                    {t('nav.register')}
                   </Button>
                 </Link>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    toggleLanguage();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+                >
+                  <Languages className="mr-2 h-4 w-4" />
+                  {language === 'en' ? 'नेपाली' : 'English'}
+                </Button>
               </div>
             </div>
           </div>
