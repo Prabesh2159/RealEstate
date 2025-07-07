@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface LanguageContextType {
@@ -15,6 +16,7 @@ const translations = {
     'nav.buy': 'Buy',
     'nav.sell': 'Sell',
     'nav.rent': 'Rent',
+    'nav.others': 'Others',
     'nav.repairing': 'Repairing',
     'nav.contact': 'Contact',
     'nav.login': 'Login',
@@ -83,6 +85,7 @@ const translations = {
     'nav.buy': 'किन्नुहोस्',
     'nav.sell': 'बेच्नुहोस्',
     'nav.rent': 'भाडामा',
+    'nav.others': 'अन्य',
     'nav.repairing': 'मर्मत',
     'nav.contact': 'सम्पर्क',
     'nav.login': 'लगइन',

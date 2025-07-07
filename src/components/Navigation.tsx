@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Home as HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -8,16 +8,30 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { language, toggleLanguage, t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Keyboard shortcut for admin login
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.shiftKey && event.altKey && event.key.toLowerCase() === 'a') {
+        event.preventDefault();
+        navigate('/login');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   const navLinks = [
     { name: t('nav.home'), path: "/" },
     { name: t('nav.buy'), path: "/buy" },
     { name: t('nav.sell'), path: "/sell" },
     { name: t('nav.rent'), path: "/rent" },
-    { name: "Others", path: "/others" },
+    { name: t('nav.others'), path: "/others" },
     { name: t('nav.contact'), path: "/contact" },
   ];
 
@@ -53,13 +67,8 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Admin Login and Language Toggle */}
+          {/* Language Toggle Only */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="outline" className="border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
-                Admin Login
-              </Button>
-            </Link>
             <Button
               variant="outline"
               onClick={toggleLanguage}
@@ -99,12 +108,7 @@ const Navigation = () => {
                   {link.name}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-2 pt-4 border-t">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
-                    Admin Login
-                  </Button>
-                </Link>
+              <div className="pt-4 border-t">
                 <Button
                   variant="outline"
                   onClick={() => {
