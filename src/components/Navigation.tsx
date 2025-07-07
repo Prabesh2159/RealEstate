@@ -17,7 +17,7 @@ const Navigation = () => {
     { name: t('nav.buy'), path: "/buy" },
     { name: t('nav.sell'), path: "/sell" },
     { name: t('nav.rent'), path: "/rent" },
-    { name: t('nav.repairing'), path: "/repairing" },
+    { name: "Others", path: "/others" },
     { name: t('nav.contact'), path: "/contact" },
   ];
 
