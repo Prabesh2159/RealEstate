@@ -34,7 +34,7 @@ const Navigation = () => {
             />
             <div className="flex flex-col">
               <span className="text-brand-green font-bold text-lg leading-tight">Real Estate Crafters</span>
-              <span className="text-brand-blue text-xs font-medium leading-tight">International Pvt Ltd</span>
+              <span className="text-brand-blue text-xs font-medium leading-tight">International Private Limited</span>
             </div>
           </Link>
 

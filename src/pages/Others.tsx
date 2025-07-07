@@ -8,8 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Others = () => {
+  const { t } = useLanguage();
+  
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -24,38 +27,38 @@ const Others = () => {
   const services = [
     {
       icon: Hammer,
-      title: "House Renovation",
-      description: "Complete home makeovers, room additions, and structural improvements",
+      title: t('others.services.houseRenovation'),
+      description: t('others.services.houseRenovationDesc'),
       color: "bg-orange-500"
     },
     {
       icon: Paintbrush,
-      title: "Interior Painting",
-      description: "Professional interior wall painting and color consultations",
+      title: t('others.services.interiorPainting'),
+      description: t('others.services.interiorPaintingDesc'),
       color: "bg-blue-500"
     },
     {
       icon: Palette,
-      title: "Exterior Painting",
-      description: "Weather-resistant exterior painting and facade improvements",
+      title: t('others.services.exteriorPainting'),
+      description: t('others.services.exteriorPaintingDesc'),
       color: "bg-green-500"
     },
     {
       icon: Wrench,
-      title: "Kitchen Renovation",
-      description: "Modern kitchen upgrades, cabinet installation, and countertops",
+      title: t('others.services.kitchenRenovation'),
+      description: t('others.services.kitchenRenovationDesc'),
       color: "bg-red-500"
     },
     {
       icon: Home,
-      title: "Bathroom Renovation",
-      description: "Bathroom remodeling, tile work, and fixture installation",
+      title: t('others.services.bathroomRenovation'),
+      description: t('others.services.bathroomRenovationDesc'),
       color: "bg-purple-500"
     },
     {
       icon: Hammer,
-      title: "Flooring Services",
-      description: "Hardwood, tile, carpet, and laminate flooring installation",
+      title: t('others.services.flooring'),
+      description: t('others.services.flooringDesc'),
       color: "bg-yellow-500"
     }
   ];
@@ -70,8 +73,8 @@ const Others = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Service Request Submitted!",
-      description: "We'll contact you within 24 hours to discuss your renovation project.",
+      title: t('others.toast.title'),
+      description: t('others.toast.description'),
     });
     console.log("Service request submitted:", formData);
   };
@@ -85,8 +88,8 @@ const Others = () => {
         <div className="absolute inset-0 bg-black opacity-40"></div>
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <Hammer className="mx-auto h-16 w-16 mb-6" />
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Other Services</h1>
-          <p className="text-xl">House Renovation & Painting Services</p>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">{t('others.hero.title')}</h1>
+          <p className="text-xl">{t('others.hero.subtitle')}</p>
         </div>
       </section>
 
@@ -94,8 +97,8 @@ const Others = () => {
         {/* Services Grid */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Services</h2>
-            <p className="text-gray-600 text-lg">Professional renovation and painting services for your home</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">{t('others.services.title')}</h2>
+            <p className="text-gray-600 text-lg">{t('others.services.subtitle')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -118,7 +121,7 @@ const Others = () => {
           <CardHeader className="bg-orange-600 text-white">
             <CardTitle className="text-2xl flex items-center">
               <Hammer className="mr-3 h-6 w-6" />
-              Request a Service
+              {t('others.form.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-8">
@@ -126,7 +129,7 @@ const Others = () => {
               {/* Personal Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="name" className="text-sm font-medium">Full Name *</Label>
+                  <Label htmlFor="name" className="text-sm font-medium">{t('others.form.name')} *</Label>
                   <Input
                     id="name"
                     name="name"
@@ -139,7 +142,7 @@ const Others = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="phone" className="text-sm font-medium">Phone Number *</Label>
+                  <Label htmlFor="phone" className="text-sm font-medium">{t('others.form.phone')} *</Label>
                   <Input
                     id="phone"
                     name="phone"
@@ -155,7 +158,7 @@ const Others = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">{t('others.form.email')}</Label>
                   <Input
                     id="email"
                     name="email"
@@ -168,7 +171,7 @@ const Others = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="address" className="text-sm font-medium">Property Address *</Label>
+                  <Label htmlFor="address" className="text-sm font-medium">{t('others.form.address')} *</Label>
                   <Input
                     id="address"
                     name="address"
@@ -184,7 +187,7 @@ const Others = () => {
               {/* Service Details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="serviceType" className="text-sm font-medium">Service Type *</Label>
+                  <Label htmlFor="serviceType" className="text-sm font-medium">{t('others.form.serviceType')} *</Label>
                   <select
                     id="serviceType"
                     name="serviceType"
@@ -194,17 +197,17 @@ const Others = () => {
                     className="mt-1 w-full h-10 px-3 border border-gray-300 rounded-md"
                   >
                     <option value="">Select Service</option>
-                    <option value="house-renovation">House Renovation</option>
-                    <option value="interior-painting">Interior Painting</option>
-                    <option value="exterior-painting">Exterior Painting</option>
-                    <option value="kitchen-renovation">Kitchen Renovation</option>
-                    <option value="bathroom-renovation">Bathroom Renovation</option>
-                    <option value="flooring">Flooring Services</option>
+                    <option value="house-renovation">{t('others.services.houseRenovation')}</option>
+                    <option value="interior-painting">{t('others.services.interiorPainting')}</option>
+                    <option value="exterior-painting">{t('others.services.exteriorPainting')}</option>
+                    <option value="kitchen-renovation">{t('others.services.kitchenRenovation')}</option>
+                    <option value="bathroom-renovation">{t('others.services.bathroomRenovation')}</option>
+                    <option value="flooring">{t('others.services.flooring')}</option>
                   </select>
                 </div>
 
                 <div>
-                  <Label htmlFor="urgency" className="text-sm font-medium">Urgency Level *</Label>
+                  <Label htmlFor="urgency" className="text-sm font-medium">{t('others.form.urgency')} *</Label>
                   <select
                     id="urgency"
                     name="urgency"
@@ -222,7 +225,7 @@ const Others = () => {
               </div>
 
               <div>
-                <Label htmlFor="preferredDate" className="text-sm font-medium">Preferred Start Date</Label>
+                <Label htmlFor="preferredDate" className="text-sm font-medium">{t('others.form.preferredDate')}</Label>
                 <Input
                   id="preferredDate"
                   name="preferredDate"
@@ -234,7 +237,7 @@ const Others = () => {
               </div>
 
               <div>
-                <Label htmlFor="description" className="text-sm font-medium">Project Description *</Label>
+                <Label htmlFor="description" className="text-sm font-medium">{t('others.form.description')} *</Label>
                 <Textarea
                   id="description"
                   name="description"
@@ -249,13 +252,13 @@ const Others = () => {
 
               {/* Image Upload */}
               <div>
-                <Label className="text-sm font-medium">Upload Images (Optional)</Label>
+                <Label className="text-sm font-medium">{t('others.form.upload')}</Label>
                 <div className="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
                   <Upload className="mx-auto h-10 w-10 text-gray-400 mb-3" />
-                  <p className="text-gray-500 mb-2">Upload photos of the area to be renovated</p>
-                  <p className="text-sm text-gray-400">PNG, JPG up to 5MB each</p>
+                  <p className="text-gray-500 mb-2">{t('others.form.uploadDesc')}</p>
+                  <p className="text-sm text-gray-400">{t('others.form.uploadFormat')}</p>
                   <Button type="button" variant="outline" className="mt-3">
-                    Choose Images
+                    {t('others.form.chooseImages')}
                   </Button>
                 </div>
               </div>
@@ -263,7 +266,7 @@ const Others = () => {
               {/* Submit Button */}
               <div className="pt-6">
                 <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-lg py-3">
-                  Submit Service Request
+                  {t('others.form.submit')}
                 </Button>
               </div>
             </form>
