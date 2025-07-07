@@ -34,7 +34,7 @@ const Navigation = () => {
             />
             <div className="flex flex-col">
               <span className="text-brand-green font-bold text-lg leading-tight">Real Estate Crafters</span>
-              <span className="text-brand-blue text-xs font-medium leading-tight">International Private Limited</span>
+              <span className="text-brand-blue text-xs font-medium leading-tight">International Pvt Ltd</span>
             </div>
           </Link>
 
@@ -53,16 +53,11 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Login/Register/Language Buttons */}
+          {/* Admin Login and Language Toggle */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
               <Button variant="outline" className="border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
-                {t('nav.login')}
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-brand-green hover:bg-brand-green/90">
-                {t('nav.register')}
+                Admin Login
               </Button>
             </Link>
             <Button
@@ -107,12 +102,7 @@ const Navigation = () => {
               <div className="flex flex-col space-y-2 pt-4 border-t">
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="outline" className="w-full border-brand-green text-brand-green hover:bg-brand-green hover:text-white">
-                    {t('nav.login')}
-                  </Button>
-                </Link>
-                <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-brand-green hover:bg-brand-green/90">
-                    {t('nav.register')}
+                    Admin Login
                   </Button>
                 </Link>
                 <Button
