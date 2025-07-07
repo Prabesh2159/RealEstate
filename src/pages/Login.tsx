@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, Shield } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff, Shield, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,7 @@ const Login = () => {
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -25,12 +26,13 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate admin login
+    // Simulate admin login success
+    localStorage.setItem('adminLoggedIn', 'true');
     toast({
       title: "Admin Login Successful!",
       description: "Welcome to Admin Dashboard.",
     });
-    console.log("Admin login attempt:", formData);
+    navigate('/admin');
   };
 
   return (
@@ -38,8 +40,18 @@ const Login = () => {
       <Navigation />
       
       <div className="flex items-center justify-center py-12 px-4">
-        <Card className="w-full max-w-md shadow-xl">
-          <CardHeader className="text-center">
+        <Card className="w-full max-w-md shadow-xl relative">
+          {/* Back Button */}
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="absolute top-4 left-4 p-2 h-auto"
+            title="Back to Home"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+
+          <CardHeader className="text-center pt-12">
             <div className="mx-auto mb-4 w-16 h-16 bg-brand-green rounded-full flex items-center justify-center">
               <Shield className="h-8 w-8 text-white" />
             </div>
