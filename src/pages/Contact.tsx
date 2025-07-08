@@ -117,18 +117,15 @@ const Contact = () => {
             </Card>
 
             {/* Enhanced Map Placeholder */}
-            <Card className="shadow-xl hover-lift animate-scale-in animate-delay-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
-              <CardContent className="p-0">
-                <div className="h-64 sm:h-72 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-600 text-lg font-medium">Interactive Map</p>
-                    <p className="text-gray-500 text-sm">Coming Soon</p>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-                </div>
-              </CardContent>
-            </Card>
+            <Card className="shadow-xl hover-lift animate-scale-in animate-delay-300 border-0 bg-white/80 backdrop-blur-sm">
+  <iframe
+   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3563.4383042902004!2d85.92298397552759!3d26.73038577675638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ec40069de3d507%3A0x5e9842f10a951d7f!2sJanaki%20Temple!5e0!3m2!1sen!2snp!4v1751989193610!5m2!1sen!2snp"
+    className="w-full h-[450px]"
+    loading="lazy"
+    style={{ border: 0 }}
+    referrerPolicy="no-referrer-when-downgrade"
+  ></iframe>
+</Card>
           </div>
 
           {/* Enhanced Contact Form */}
