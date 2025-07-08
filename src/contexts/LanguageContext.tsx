@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 interface LanguageContextProps {
   language: 'en' | 'np';
@@ -13,7 +13,7 @@ const translations = {
     nav: {
       home: "Home",
       buy: "Buy",
-      sell: "Sell",
+      sell: "Sell", 
       rent: "Rent",
       others: "Others",
       contact: "Contact",
