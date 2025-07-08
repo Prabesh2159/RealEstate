@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Paintbrush, Hammer, Wrench, Palette, Home, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -105,21 +104,22 @@ const Others = () => {
 
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="relative h-64 sm:h-80 lg:h-96 bg-gradient-to-r from-green-600 to-green-700 flex items-center justify-center animate-fade-in-up">
-        <div className="absolute inset-0 bg-black opacity-40"></div>
-         <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-          
-  </div>
+      {/* Hero Section with Paper Folding Gradient */}
+      <section className="relative h-64 sm:h-80 lg:h-96 hero-gradient-bg flex items-center justify-center animate-fade-in-up overflow-hidden">
+        {/* Paper Folding Animation Layers */}
+        <div className="absolute inset-0 paper-fold-layer-1"></div>
+        <div className="absolute inset-0 paper-fold-layer-2"></div>
+        <div className="absolute inset-0 paper-fold-layer-3"></div>
+        
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-          <div className="rain-background"></div>
           <Hammer className="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mb-4 sm:mb-6 animate-bounce" />
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">{t('others.hero.title')}</h1>
           <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">{t('others.hero.subtitle')}</p>
-      
         </div>
       </section>
-      
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
         {/* Services Grid */}
