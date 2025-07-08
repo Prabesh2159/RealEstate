@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Paintbrush, Hammer, Wrench, Palette, Home, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -104,12 +105,17 @@ const Others = () => {
 
       <Navigation />
       
-      {/* Hero Section with Paper Folding Gradient */}
-      <section className="relative h-64 sm:h-80 lg:h-96 hero-gradient-bg flex items-center justify-center animate-fade-in-up overflow-hidden">
-        {/* Paper Folding Animation Layers */}
-        <div className="absolute inset-0 paper-fold-layer-1"></div>
-        <div className="absolute inset-0 paper-fold-layer-2"></div>
-        <div className="absolute inset-0 paper-fold-layer-3"></div>
+      {/* Hero Section with Bubble Effect */}
+      <section className="relative h-64 sm:h-80 lg:h-96 hero-bubble-bg flex items-center justify-center animate-fade-in-up overflow-hidden">
+        {/* Floating Bubbles */}
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
         
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20"></div>
