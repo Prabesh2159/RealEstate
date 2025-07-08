@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Search, Filter, MapPin, Bed, Bath, Square } from "lucide-react";
+import { Search, Filter, MapPin, Bed, Bath, Square, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,7 +21,8 @@ const Buy = () => {
       beds: 4,
       baths: 3,
       sqft: 2400,
-      type: "house"
+      type: "house",
+      phone: "(555) 123-4567"
     },
     {
       id: 2,
@@ -33,7 +33,8 @@ const Buy = () => {
       beds: 2,
       baths: 2,
       sqft: 1800,
-      type: "condo"
+      type: "condo",
+      phone: "(555) 234-5678"
     },
     {
       id: 3,
@@ -44,7 +45,8 @@ const Buy = () => {
       beds: 3,
       baths: 2,
       sqft: 1600,
-      type: "house"
+      type: "house",
+      phone: "(555) 345-6789"
     },
     {
       id: 4,
@@ -55,7 +57,8 @@ const Buy = () => {
       beds: 3,
       baths: 2.5,
       sqft: 2000,
-      type: "townhouse"
+      type: "townhouse",
+      phone: "(555) 456-7890"
     },
     {
       id: 5,
@@ -66,7 +69,8 @@ const Buy = () => {
       beds: 1,
       baths: 1,
       sqft: 1200,
-      type: "apartment"
+      type: "apartment",
+      phone: "(555) 567-8901"
     },
     {
       id: 6,
@@ -77,7 +81,8 @@ const Buy = () => {
       beds: 5,
       baths: 4,
       sqft: 3200,
-      type: "house"
+      type: "house",
+      phone: "(555) 678-9012"
     }
   ];
 
@@ -109,34 +114,52 @@ const Buy = () => {
     return matchesSearch && matchesType && matchesLocation && matchesPrice;
   });
 
+  const handleCallNow = (phone: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    button.classList.add('animate-press-down');
+    const icon = button.querySelector('.phone-icon');
+    if (icon) {
+      icon.classList.add('animate-phone-ring');
+    }
+    
+    setTimeout(() => {
+      button.classList.remove('animate-press-down');
+      if (icon) {
+        icon.classList.remove('animate-phone-ring');
+      }
+    }, 500);
+    
+    window.location.href = `tel:${phone}`;
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-green-50">
       <Navigation />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Properties for Sale</h1>
-          <p className="text-gray-600 text-lg">Find your perfect home from our extensive collection</p>
+        <div className="text-center mb-8 animate-fade-in-up">
+          <h1 className="text-4xl font-bold text-green-800 mb-4">Properties for Sale</h1>
+          <p className="text-green-600 text-lg">Find your perfect home from our extensive collection</p>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-2 border-green-200 animate-slide-in-down animate-delay-200">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-3 h-5 w-5 text-green-500" />
               <Input
                 placeholder="Search properties..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 border-green-300 focus:border-green-500 smooth-transition"
               />
             </div>
             
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              className="h-10 px-3 border border-gray-300 rounded-md"
+              className="h-10 px-3 border border-green-300 rounded-md focus:border-green-500 text-green-700 smooth-transition"
             >
               <option value="">All Locations</option>
               <option value="downtown">Downtown</option>
@@ -148,7 +171,7 @@ const Buy = () => {
             <select
               value={priceFilter}
               onChange={(e) => setPriceFilter(e.target.value)}
-              className="h-10 px-3 border border-gray-300 rounded-md"
+              className="h-10 px-3 border border-green-300 rounded-md focus:border-green-500 text-green-700 smooth-transition"
             >
               <option value="">All Prices</option>
               <option value="0-300k">Under $300k</option>
@@ -160,7 +183,7 @@ const Buy = () => {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="h-10 px-3 border border-gray-300 rounded-md"
+              className="h-10 px-3 border border-green-300 rounded-md focus:border-green-500 text-green-700 smooth-transition"
             >
               <option value="">All Types</option>
               <option value="house">House</option>
@@ -169,7 +192,7 @@ const Buy = () => {
               <option value="townhouse">Townhouse</option>
             </select>
 
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button className="bg-green-600 hover:bg-green-700 border-2 border-green-600 hover:border-green-700 smooth-transition hover-lift">
               <Filter className="mr-2 h-4 w-4" />
               Apply Filters
             </Button>
@@ -177,16 +200,16 @@ const Buy = () => {
         </div>
 
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
+        <div className="mb-6 animate-fade-in-left animate-delay-300">
+          <p className="text-green-600">
             Showing {filteredProperties.length} of {properties.length} properties
           </p>
         </div>
 
         {/* Property Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProperties.map((property) => (
-            <Card key={property.id} className="group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2">
+          {filteredProperties.map((property, index) => (
+            <Card key={property.id} className={`group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 border-2 border-green-200 hover:border-green-400 animate-scale-in animate-delay-${Math.min(500 + index * 100, 800)}`}>
               <div className="relative overflow-hidden rounded-t-lg">
                 <img
                   src={property.image}
@@ -201,12 +224,12 @@ const Buy = () => {
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{property.title}</h3>
-                <p className="text-gray-600 mb-4 flex items-center">
+                <h3 className="text-xl font-bold text-green-800 mb-2">{property.title}</h3>
+                <p className="text-green-600 mb-4 flex items-center">
                   <MapPin className="mr-1 h-4 w-4" />
                   {property.location}
                 </p>
-                <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
+                <div className="flex justify-between items-center text-sm text-green-600 mb-4">
                   <div className="flex items-center">
                     <Bed className="mr-1 h-4 w-4" />
                     {property.beds} beds
@@ -220,17 +243,27 @@ const Buy = () => {
                     {property.sqft} sq ft
                   </div>
                 </div>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  View Details
-                </Button>
+                <div className="flex gap-2">
+                  <Button className="flex-1 bg-green-600 hover:bg-green-700 smooth-transition hover-lift">
+                    View Details
+                  </Button>
+                  <Button 
+                    onClick={(e) => handleCallNow(property.phone, e)}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md font-medium shadow-lg transform hover:scale-105 smooth-transition relative overflow-hidden group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <Phone className="h-4 w-4 mr-1 phone-icon relative z-10" />
+                    <span className="relative z-10">Call Now</span>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
         {filteredProperties.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No properties found matching your criteria.</p>
+          <div className="text-center py-12 animate-fade-in-up">
+            <p className="text-green-600 text-lg">No properties found matching your criteria.</p>
             <Button 
               onClick={() => {
                 setSearchTerm("");
@@ -238,7 +271,7 @@ const Buy = () => {
                 setTypeFilter("");
                 setLocationFilter("");
               }}
-              className="mt-4 bg-blue-600 hover:bg-blue-700"
+              className="mt-4 bg-green-600 hover:bg-green-700 smooth-transition hover-lift"
             >
               Clear Filters
             </Button>

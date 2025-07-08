@@ -177,7 +177,7 @@ const Rent = () => {
               <option value="penthouse">Penthouse</option>
             </select>
 
-            <Button className="bg-purple-600 hover:bg-purple-700">
+            <Button className="bg-green-600 hover:bg-green-700">
               <Filter className="mr-2 h-4 w-4" />
               Apply Filters
             </Button>
@@ -201,10 +201,10 @@ const Rent = () => {
                   alt={property.title}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute top-4 left-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   For Rent
                 </div>
-                <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {property.price}
                 </div>
                 <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm flex items-center">
@@ -232,7 +232,7 @@ const Rent = () => {
                     {property.sqft} sq ft
                   </div>
                 </div>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                <Button className="w-full bg-green-600 hover:bg-green-700">
                   Contact Landlord
                 </Button>
               </CardContent>
@@ -250,7 +250,7 @@ const Rent = () => {
                 setTypeFilter("");
                 setLocationFilter("");
               }}
-              className="mt-4 bg-purple-600 hover:bg-purple-700"
+              className="mt-4 bg-green-600 hover:bg-green-700"
             >
               Clear Filters
             </Button>

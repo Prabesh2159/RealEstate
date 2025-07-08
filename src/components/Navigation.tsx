@@ -67,16 +67,16 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Language Toggle Only */}
+          {/* Language Toggle with Green Colors */}
           <div className="hidden md:flex items-center space-x-4">
             <Button
               variant="outline"
               onClick={toggleLanguage}
-              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white px-3 py-2 h-10 min-w-[60px]"
+              className="border-brand-green text-brand-green hover:bg-brand-green hover:text-white px-3 py-2 h-10 min-w-[60px] smooth-transition"
               title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             >
               <span className="text-sm font-medium">
-                {language === 'en' ? 'En-Np' : 'Np-En'}
+                {language === 'en' ? 'En-नेपा' : 'नेपा-En'}
               </span>
             </Button>
           </div>
@@ -115,10 +115,10 @@ const Navigation = () => {
                     toggleLanguage();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+                  className="w-full border-brand-green text-brand-green hover:bg-brand-green hover:text-white smooth-transition"
                 >
                   <span className="text-sm font-medium">
-                    {language === 'en' ? 'En-Np' : 'Np-En'}
+                    {language === 'en' ? 'En-नेपा' : 'नेपा-En'}
                   </span>
                 </Button>
               </div>

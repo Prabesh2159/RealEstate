@@ -1,21 +1,25 @@
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, Shield, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
+import Navigation from "@/components/Navigation";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+
+  // Specific admin credentials
+  const ADMIN_EMAIL = "admin@realestate.com";
+  const ADMIN_PASSWORD = "RealEstate2024!";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -26,42 +30,37 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate admin login success
-    localStorage.setItem('adminLoggedIn', 'true');
-    toast({
-      title: "Admin Login Successful!",
-      description: "Welcome to Admin Dashboard.",
-    });
-    navigate('/admin');
+    
+    if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
+      localStorage.setItem('adminLoggedIn', 'true');
+      toast({
+        title: "Login Successful!",
+        description: "Welcome to the admin dashboard.",
+      });
+      navigate('/admin');
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       
-      <div className="flex items-center justify-center py-12 px-4">
-        <Card className="w-full max-w-md shadow-xl relative">
-          {/* Back Button */}
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="absolute top-4 left-4 p-2 h-auto"
-            title="Back to Home"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-
-          <CardHeader className="text-center pt-12">
-            <div className="mx-auto mb-4 w-16 h-16 bg-brand-green rounded-full flex items-center justify-center">
-              <Shield className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle className="text-3xl font-bold text-gray-800">Admin Login</CardTitle>
-            <p className="text-gray-600 mt-2">Access Real Estate Crafters Admin Panel</p>
+      <div className="max-w-md mx-auto px-4 py-16">
+        <Card className="shadow-xl">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-gray-800">Admin Login</CardTitle>
+            <p className="text-gray-600">Access the admin dashboard</p>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Label htmlFor="email" className="text-sm font-medium">Admin Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
                 <div className="relative mt-1">
                   <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
@@ -70,7 +69,7 @@ const Login = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="admin@realestatecrafters.com"
+                    placeholder="admin@realestate.com"
                     required
                     className="pl-10"
                   />
@@ -78,7 +77,7 @@ const Login = () => {
               </div>
 
               <div>
-                <Label htmlFor="password" className="text-sm font-medium">Admin Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <div className="relative mt-1">
                   <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
@@ -87,7 +86,7 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleInputChange}
-                    placeholder="Enter admin password"
+                    placeholder="Enter your password"
                     required
                     className="pl-10 pr-10"
                   />
@@ -101,24 +100,16 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input type="checkbox" className="rounded" />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-                <Link to="#" className="text-sm text-brand-blue hover:text-brand-green">
-                  Forgot password?
-                </Link>
-              </div>
-
-              <Button type="submit" className="w-full bg-brand-green hover:bg-brand-green/90 py-2">
-                Sign In as Admin
+              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-lg py-3">
+                Login to Admin Dashboard
               </Button>
             </form>
 
-            <div className="text-center">
-              <p className="text-gray-600 text-sm">
-                Admin access only. Unauthorized access is prohibited.
+            <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+              <h4 className="font-semibold text-green-800 mb-2">Admin Credentials:</h4>
+              <p className="text-sm text-green-700">
+                <strong>Email:</strong> admin@realestate.com<br />
+                <strong>Password:</strong> RealEstate2024!
               </p>
             </div>
           </CardContent>
