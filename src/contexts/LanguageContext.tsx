@@ -1,168 +1,202 @@
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-interface LanguageContextType {
+interface LanguageContextProps {
   language: 'en' | 'np';
   toggleLanguage: () => void;
   t: (key: string) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
 
 const translations = {
   en: {
-    // Navigation
-    'nav.home': 'Home',
-    'nav.buy': 'Buy',
-    'nav.sell': 'Sell',
-    'nav.rent': 'Rent',
-    'nav.others': 'Others',
-    'nav.repairing': 'Repairing',
-    'nav.contact': 'Contact',
-    'nav.login': 'Login',
-    'nav.register': 'Register',
-    
-    // Home Page
-    'home.hero.title': 'Find Your Dream Home',
-    'home.hero.subtitle': 'Discover the perfect property with our comprehensive real estate platform',
-    'home.search.location': 'Location',
-    'home.search.price': 'Price Range',
-    'home.search.type': 'Property Type',
-    'home.search.button': 'Search',
-    'home.featured.title': 'Featured Properties',
-    'home.featured.subtitle': 'Discover our hand-picked selection of premium properties',
-    'home.action.buy.title': 'Buy a Home',
-    'home.action.buy.desc': 'Find your perfect home from thousands of listings',
-    'home.action.sell.title': 'Sell a Home',
-    'home.action.sell.desc': 'List your property and connect with buyers',
-    'home.action.rent.title': 'Rent a Home',
-    'home.action.rent.desc': 'Discover rental properties in your area',
-    
-    // Others Page
-    'others.hero.title': 'Other Services',
-    'others.hero.subtitle': 'House Renovation & Painting Services',
-    'others.services.title': 'Our Services',
-    'others.services.subtitle': 'Professional renovation and painting services for your home',
-    'others.form.title': 'Request a Service',
-    'others.form.name': 'Full Name',
-    'others.form.phone': 'Phone Number',
-    'others.form.email': 'Email Address',
-    'others.form.address': 'Property Address',
-    'others.form.serviceType': 'Service Type',
-    'others.form.urgency': 'Urgency Level',
-    'others.form.preferredDate': 'Preferred Start Date',
-    'others.form.description': 'Project Description',
-    'others.form.upload': 'Upload Images (Optional)',
-    'others.form.uploadDesc': 'Upload photos of the area to be renovated',
-    'others.form.uploadFormat': 'PNG, JPG up to 5MB each',
-    'others.form.chooseImages': 'Choose Images',
-    'others.form.submit': 'Submit Service Request',
-    'others.services.houseRenovation': 'House Renovation',
-    'others.services.houseRenovationDesc': 'Complete home makeovers, room additions, and structural improvements',
-    'others.services.interiorPainting': 'Interior Painting',
-    'others.services.interiorPaintingDesc': 'Professional interior wall painting and color consultations',
-    'others.services.exteriorPainting': 'Exterior Painting',
-    'others.services.exteriorPaintingDesc': 'Weather-resistant exterior painting and facade improvements',
-    'others.services.kitchenRenovation': 'Kitchen Renovation',
-    'others.services.kitchenRenovationDesc': 'Modern kitchen upgrades, cabinet installation, and countertops',
-    'others.services.bathroomRenovation': 'Bathroom Renovation',
-    'others.services.bathroomRenovationDesc': 'Bathroom remodeling, tile work, and fixture installation',
-    'others.services.flooring': 'Flooring Services',
-    'others.services.flooringDesc': 'Hardwood, tile, carpet, and laminate flooring installation',
-    'others.toast.title': 'Service Request Submitted!',
-    'others.toast.description': 'We\'ll contact you within 24 hours to discuss your renovation project.',
-    
-    // Common
-    'common.beds': 'beds',
-    'common.baths': 'baths',
-    'common.featured': 'Featured',
-    'common.company': 'Real Estate Crafters',
-    'common.tagline': 'Your trusted partner in real estate and home services.',
+    nav: {
+      home: "Home",
+      buy: "Buy",
+      sell: "Sell",
+      rent: "Rent",
+      others: "Others",
+      contact: "Contact",
+    },
+    home: {
+      hero: {
+        title: "Find Your Dream Home",
+        subtitle: "Explore a wide range of properties and real estate services.",
+      },
+      search: {
+        location: "Enter Location",
+        price: "Select Price Range",
+        type: "Select Property Type",
+        button: "Search",
+      },
+      featured: {
+        title: "Featured Properties",
+        subtitle: "Explore our handpicked selection of premium properties.",
+      },
+      action: {
+        buy: {
+          title: "Buy a Home",
+          desc: "Find the perfect property to call your own.",
+        },
+        sell: {
+          title: "Sell Your Property",
+          desc: "Get the best value for your property with our expert services.",
+        },
+        rent: {
+          title: "Rent a Property",
+          desc: "Discover a variety of rental options in your desired location.",
+        },
+        others: {
+          title: "Explore More",
+          desc: "Discover a variety of other services and opportunities.",
+        }
+      },
+    },
+    contact: {
+      title: "Contact Us",
+      subtitle: "Get in touch with our team for any inquiries.",
+      form: {
+        name: "Your Name",
+        email: "Your Email",
+        message: "Your Message",
+        button: "Send Message",
+      },
+      info: {
+        address: "123 Real Estate St, City, State 12345",
+        phone: "(555) 123-4567",
+        email: "info@realestatecrafters.com",
+      },
+    },
+    others: {
+      title: "Other Services",
+      subtitle: "Explore our additional services and opportunities.",
+      services: {
+        management: "Property Management",
+        inspection: "Home Inspection",
+        repair: "Repair Services",
+        investment: "Real Estate Investment",
+      },
+    },
+    common: {
+      company: "Real Estate Crafters International Private Limited",
+      tagline: "Your trusted partner in real estate solutions",
+      featured: "Featured",
+      beds: "Beds",
+      baths: "Baths",
+      callNow: "Call Now",
+      phone: "Phone"
+    },
   },
   np: {
-    // Navigation
-    'nav.home': 'घर',
-    'nav.buy': 'किन्नुहोस्',
-    'nav.sell': 'बेच्नुहोस्',
-    'nav.rent': 'भाडामा',
-    'nav.others': 'अन्य',
-    'nav.repairing': 'मर्मत',
-    'nav.contact': 'सम्पर्क',
-    'nav.login': 'लगइन',
-    'nav.register': 'दर्ता',
-    
-    // Home Page
-    'home.hero.title': 'आफ्नो सपनाको घर खोज्नुहोस्',
-    'home.hero.subtitle': 'हाम्रो व्यापक रियल इस्टेट प्लेटफर्मसँग उत्तम सम्पत्ति पत्ता लगाउनुहोस्',
-    'home.search.location': 'स्थान',
-    'home.search.price': 'मूल्य दायरा',
-    'home.search.type': 'सम्पत्तिको प्रकार',
-    'home.search.button': 'खोज्नुहोस्',
-    'home.featured.title': 'विशेष सम्पत्तिहरू',
-    'home.featured.subtitle': 'हाम्रो हातले छानिएका प्रिमियम सम्पत्तिहरू पत्ता लगाउनुहोस्',
-    'home.action.buy.title': 'घर किन्नुहोस्',
-    'home.action.buy.desc': 'हजारौं सूचीहरूबाट आफ्नो उत्तम घर फेला पार्नुहोस्',
-    'home.action.sell.title': 'घर बेच्नुहोस्',
-    'home.action.sell.desc': 'आफ्नो सम्पत्ति सूचीबद्ध गर्नुहोस् र खरीददारहरूसँग जडान गर्नुहोस्',
-    'home.action.rent.title': 'घर भाडामा लिनुहोस्',
-    'home.action.rent.desc': 'आफ्नो क्षेत्रमा भाडाका सम्पत्तिहरू पत्ता लगाउनुहोस्',
-    
-    // Others Page
-    'others.hero.title': 'अन्य सेवाहरू',
-    'others.hero.subtitle': 'घर नवीकरण र पेन्टिङ सेवाहरू',
-    'others.services.title': 'हाम्रा सेवाहरू',
-    'others.services.subtitle': 'तपाईंको घरको लागि व्यावसायिक नवीकरण र पेन्टिङ सेवाहरू',
-    'others.form.title': 'सेवाको लागि अनुरोध गर्नुहोस्',
-    'others.form.name': 'पूरा नाम',
-    'others.form.phone': 'फोन नम्बर',
-    'others.form.email': 'इमेल ठेगाना',
-    'others.form.address': 'सम्पत्तिको ठेगाना',
-    'others.form.serviceType': 'सेवाको प्रकार',
-    'others.form.urgency': 'जरुरीको स्तर',
-    'others.form.preferredDate': 'मनपर्ने सुरुवात मिति',
-    'others.form.description': 'परियोजना विवरण',
-    'others.form.upload': 'तस्विरहरू अपलोड गर्नुहोस् (वैकल्पिक)',
-    'others.form.uploadDesc': 'नवीकरण गरिने क्षेत्रका तस्विरहरू अपलोड गर्नुहोस्',
-    'others.form.uploadFormat': 'PNG, JPG प्रत्येक 5MB सम्म',
-    'others.form.chooseImages': 'तस्विरहरू छान्नुहोस्',
-    'others.form.submit': 'सेवा अनुरोध पेश गर्नुहोस्',
-    'others.services.houseRenovation': 'घर नवीकरण',
-    'others.services.houseRenovationDesc': 'पूर्ण घर परिवर्तन, कोठा थप, र संरचनात्मक सुधार',
-    'others.services.interiorPainting': 'भित्री पेन्टिङ',
-    'others.services.interiorPaintingDesc': 'व्यावसायिक भित्री भित्ता पेन्टिङ र रंग सल्लाह',
-    'others.services.exteriorPainting': 'बाहिरी पेन्टिङ',
-    'others.services.exteriorPaintingDesc': 'मौसम प्रतिरोधी बाहिरी पेन्टिङ र अग्रभाग सुधार',
-    'others.services.kitchenRenovation': 'भान्साको नवीकरण',
-    'others.services.kitchenRenovationDesc': 'आधुनिक भान्सा स्तरोन्नति, क्याबिनेट स्थापना, र काउन्टरटप',
-    'others.services.bathroomRenovation': 'बाथरूम नवीकरण',
-    'others.services.bathroomRenovationDesc': 'बाथरूम पुनर्निर्माण, टाइल काम, र फिक्स्चर स्थापना',
-    'others.services.flooring': 'फर्श सेवाहरू',
-    'others.services.flooringDesc': 'कडा काठ, टाइल, कार्पेट, र ल्यामिनेट फर्श स्थापना',
-    'others.toast.title': 'सेवा अनुरोध पेश गरियो!',
-    'others.toast.description': 'हामी तपाईंको नवीकरण परियोजनाको बारेमा छलफल गर्न 24 घण्टा भित्र सम्पर्क गर्नेछौं।',
-    
-    // Common
-    'common.beds': 'शयनकक्ष',
-    'common.baths': 'बाथरूम',
-    'common.featured': 'विशेष',
-    'common.company': 'रियल इस्टेट क्राफ्टर्स',
-    'common.tagline': 'रियल इस्टेट र घर सेवाहरूमा तपाईंको भरपर्दो साझेदार।',
+    nav: {
+      home: "घर",
+      buy: "किन्नुहोस्",
+      sell: "बेच्नुहोस्",
+      rent: "भाडामा",
+      others: "अन्य",
+      contact: "सम्पर्क",
+    },
+    home: {
+      hero: {
+        title: "आफ्नो सपनाको घर खोज्नुहोस्",
+        subtitle: "विभिन्न सम्पत्तिहरू र घर जग्गा सेवाहरू अन्वेषण गर्नुहोस्।",
+      },
+      search: {
+        location: "स्थान प्रविष्ट गर्नुहोस्",
+        price: "मूल्य दायरा चयन गर्नुहोस्",
+        type: "सम्पत्ति प्रकार चयन गर्नुहोस्",
+        button: "खोज्नुहोस्",
+      },
+      featured: {
+        title: "विशेष गुणहरू",
+        subtitle: "हाम्रो प्रीमियम गुणहरूको ह्यान्डपिक गरिएको चयन अन्वेषण गर्नुहोस्।",
+      },
+      action: {
+        buy: {
+          title: "घर किन्नुहोस्",
+          desc: "आफ्नो लागि कल गर्नको लागि उत्तम सम्पत्ति खोज्नुहोस्।",
+        },
+        sell: {
+          title: "आफ्नो सम्पत्ति बेच्नुहोस्",
+          desc: "हाम्रो विशेषज्ञ सेवाहरूको साथ आफ्नो सम्पत्तिको लागि उत्तम मूल्य प्राप्त गर्नुहोस्।",
+        },
+        rent: {
+          title: "सम्पत्ति भाडामा लिनुहोस्",
+          desc: "तपाईंको इच्छित स्थानमा विभिन्न भाडा विकल्पहरू पत्ता लगाउनुहोस्।",
+        },
+        others: {
+          title: "थप अन्वेषण गर्नुहोस्",
+          desc: "विभिन्न अन्य सेवाहरू र अवसरहरू पत्ता लगाउनुहोस्।",
+        }
+      },
+    },
+    contact: {
+      title: "हामीलाई सम्पर्क गर्नुहोस्",
+      subtitle: "कुनै पनि जिज्ञासाको लागि हाम्रो टीमसँग सम्पर्कमा रहनुहोस्।",
+      form: {
+        name: "तपाईंको नाम",
+        email: "तपाईंको इमेल",
+        message: "तपाईंको सन्देश",
+        button: "सन्देश पठाउनुहोस्",
+      },
+      info: {
+        address: "123 रियल एस्टेट सेन्ट, शहर, राज्य 12345",
+        phone: "(555) 123-4567",
+        email: "info@realestatecrafters.com",
+      },
+    },
+    others: {
+      title: "अन्य सेवाहरू",
+      subtitle: "हाम्रो अतिरिक्त सेवाहरू र अवसरहरू अन्वेषण गर्नुहोस्।",
+      services: {
+        management: "सम्पत्ति व्यवस्थापन",
+        inspection: "घर निरीक्षण",
+        repair: "मरम्मत सेवाहरू",
+        investment: "रियल एस्टेट लगानी",
+      },
+    },
+    common: {
+      company: "रियल एस्टेट क्राफ्टर्स इन्टरनेशनल प्राइभेट लिमिटेड",
+      tagline: "रियल एस्टेट समाधानमा तपाईंको विश्वसनीय साझेदार",
+      featured: "विशेष",
+      beds: "शैया",
+      baths: "बाथरूम",
+      callNow: "अहिले कल गर्नुहोस्",
+      phone: "फोन"
+    },
   }
 };
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'np'>('en');
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<'en' | 'np'>(
+    (localStorage.getItem('language') as 'en' | 'np') || 'en'
+  );
 
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'en' ? 'np' : 'en');
-  };
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
 
-  const t = (key: string): string => {
-    return translations[language][key] || key;
-  };
+  const toggleLanguage = useCallback(() => {
+    setLanguage((prev) => (prev === 'en' ? 'np' : 'en'));
+  }, []);
+
+  const t = useCallback((key: string) => {
+    const keys = key.split('.');
+    let value: any = translations[language];
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        return key;
+      }
+    }
+    return typeof value === 'string' ? value : key;
+  }, [language]);
+
+  const value = { language, toggleLanguage, t };
 
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );
@@ -170,7 +204,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
