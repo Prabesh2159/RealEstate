@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Home as HomeIcon } from "lucide-react";
@@ -31,6 +30,7 @@ const Navigation = () => {
     { name: t('nav.buy'), path: "/buy" },
     { name: t('nav.sell'), path: "/sell" },
     { name: t('nav.rent'), path: "/rent" },
+    { name: "Projects", path: "/projects" },
     { name: t('nav.others'), path: "/others" },
     { name: t('nav.contact'), path: "/contact" },
   ];
