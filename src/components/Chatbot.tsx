@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +15,7 @@ interface ChatMessage {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
@@ -30,6 +32,16 @@ const Chatbot = () => {
   if (location.pathname === '/admin') {
     return null;
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
@@ -75,10 +87,14 @@ const Chatbot = () => {
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={() => setIsOpen(true)}
-            className="h-14 w-14 rounded-full bg-brand-green hover:bg-brand-green/90 shadow-lg"
+            className={`h-14 w-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+              isScrolled 
+                ? 'bg-brand-blue hover:bg-brand-blue/90' 
+                : 'bg-brand-green hover:bg-brand-green/90'
+            }`}
             size="icon"
           >
-            <MessageCircle className="h-6 w-6 text-white" />
+            <MessageCircle className="h-6 w-6 text-white animate-bounce" />
           </Button>
         </div>
       )}
@@ -121,13 +137,13 @@ const Chatbot = () => {
                 ))}
               </div>
 
-              {/* Contact Form Button */}
-              <div className="p-4 border-t">
+              {/* Contact Form Button - Made more prominent */}
+              <div className="p-4 border-t bg-green-50">
                 <Button
                   onClick={handleContactFormRedirect}
-                  className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white mb-3"
+                  className="w-full bg-brand-green hover:bg-brand-green/90 text-white mb-3 h-12 text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                 >
-                  Go to Contact Form
+                  📞 Go to Contact Form
                 </Button>
               </div>
 
