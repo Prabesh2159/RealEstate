@@ -18,8 +18,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Specific admin credentials
-  const ADMIN_EMAIL = "admin@realestate.com";
-  const ADMIN_PASSWORD = "RealEstate2024!";
+  const ADMIN_EMAIL = "admin";
+  const ADMIN_PASSWORD = "admin123";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -41,7 +41,7 @@ const Login = () => {
     } else {
       toast({
         title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
+        description: "Invalid Username or password. Please try again.",
         variant: "destructive",
       });
     }
@@ -60,16 +60,16 @@ const Login = () => {
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                <Label htmlFor="email" className="text-sm font-medium">Username</Label>
                 <div className="relative mt-1">
                   <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     id="email"
                     name="email"
-                    type="email"
+                    type="text"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="admin@realestate.com"
+                    placeholder="Username"
                     required
                     className="pl-10"
                   />
@@ -105,13 +105,13 @@ const Login = () => {
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+            {/* <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
               <h4 className="font-semibold text-green-800 mb-2">Admin Credentials:</h4>
               <p className="text-sm text-green-700">
                 <strong>Email:</strong> admin@realestate.com<br />
                 <strong>Password:</strong> RealEstate2024!
               </p>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>

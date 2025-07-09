@@ -14,7 +14,7 @@ const Buy = () => {
   const properties = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1512917774028-1c8e55f98dbe",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Luxury Villa with Pool",
       location: "123 Ocean View Drive",
       price: "$1,200,000",
@@ -25,7 +25,7 @@ const Buy = () => {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1568605114967-8e628aa3b6a0",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Cozy Apartment in Downtown",
       location: "456 City Center Plaza",
       price: "$450,000",
@@ -36,7 +36,7 @@ const Buy = () => {
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1572120360610-d971b9ed97a1",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Charming House with Garden",
       location: "789 Green Valley Road",
       price: "$750,000",
@@ -47,7 +47,7 @@ const Buy = () => {
     },
     {
       id: 4,
-      image: "https://images.unsplash.com/photo-1600585154524-164726a42c94",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Modern Loft in Arts District",
       location: "101 Art Lane",
       price: "$600,000",
@@ -58,7 +58,7 @@ const Buy = () => {
     },
     {
       id: 5,
-      image: "https://images.unsplash.com/photo-1549294413-26f195200c1c",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Spacious Family Home",
       location: "222 Hilltop Avenue",
       price: "$900,000",
@@ -69,7 +69,7 @@ const Buy = () => {
     },
     {
       id: 6,
-      image: "https://images.unsplash.com/photo-1560185893-a55cbc9701bc",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Luxury Condo with City View",
       location: "333 Skyline Boulevard",
       price: "$800,000",

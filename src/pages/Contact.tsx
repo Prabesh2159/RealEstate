@@ -77,10 +77,9 @@ const Contact = () => {
                   <div className="min-w-0 flex-1 pt-1">
                     <h3 className="font-bold text-gray-800 text-lg sm:text-xl mb-2">Our Address</h3>
                     <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                      123 Real Estate Street<br />
-                      Business District<br />
-                      City, State 12345
-                    </p>
+                      Dhanusha<br />
+                      Janakpurdham<br />
+                     </p>
                   </div>
                 </div>
 
@@ -91,8 +90,8 @@ const Contact = () => {
                   <div className="min-w-0 flex-1 pt-1">
                     <h3 className="font-bold text-gray-800 text-lg sm:text-xl mb-2">Phone Number</h3>
                     <p className="text-gray-600 text-base sm:text-lg">
-                      <a href="tel:+15551234567" className="hover:text-blue-600 smooth-transition">
-                        (555) 123-4567
+                      <a href="tel:+977 9707362213" className="hover:text-blue-600 smooth-transition">
+                       +977 970-7362231
                       </a>
                     </p>
                   </div>
@@ -105,8 +104,8 @@ const Contact = () => {
                   <div className="min-w-0 flex-1 pt-1">
                     <h3 className="font-bold text-gray-800 text-lg sm:text-xl mb-2">Email Address</h3>
                     <p className="text-gray-600 text-base sm:text-lg">
-                      <a href="mailto:info@homehaven.com" className="hover:text-purple-600 smooth-transition">
-                        info@homehaven.com
+                      <a href="mailto:realestatecrafters1@gmail.com" className="hover:text-purple-600 smooth-transition">
+                        realestatecrafters1@gmail.com
                       </a>
                     </p>
                   </div>
@@ -119,9 +118,8 @@ const Contact = () => {
                   <div className="min-w-0 flex-1 pt-1">
                     <h3 className="font-bold text-gray-800 text-lg sm:text-xl mb-2">Business Hours</h3>
                     <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                      Monday - Friday: 9:00 AM - 6:00 PM<br />
-                      Saturday: 10:00 AM - 4:00 PM<br />
-                      Sunday: Closed
+                      Sunday - Friday: 9:00 AM - 6:00 PM<br />
+                      Saturday:Closed <br />
                     </p>
                   </div>
                 </div>

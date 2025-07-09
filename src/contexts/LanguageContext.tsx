@@ -1,4 +1,4 @@
-
+import Projects from '@/pages/Projects';
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 interface LanguageContextProps {
@@ -18,6 +18,7 @@ const translations = {
       rent: "Rent",
       others: "Others",
       contact: "Contact",
+      Projects: "Projects",
     },
     home: {
       hero: {
@@ -122,7 +123,7 @@ const translations = {
   },
   np: {
     nav: {
-      home: "घर",
+      home: "गृह",
       buy: "किन्नुहोस्",
       sell: "बेच्नुहोस्",
       rent: "भाडामा",
