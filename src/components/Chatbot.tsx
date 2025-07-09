@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface ChatMessage {
   id: number;
@@ -25,6 +24,12 @@ const Chatbot = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide chatbot on admin panel
+  if (location.pathname === '/admin') {
+    return null;
+  }
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;

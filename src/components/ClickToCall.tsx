@@ -1,30 +1,29 @@
 
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 
 const ClickToCall = () => {
-  const { t } = useLanguage();
-  
-  // Company owner's phone number
-  const phoneNumber = "+977-9876543210";
-  
-  const handleCallClick = () => {
-    window.location.href = `tel:${phoneNumber}`;
+  const location = useLocation();
+
+  // Hide click-to-call on admin panel
+  if (location.pathname === '/admin') {
+    return null;
+  }
+
+  const handleCall = () => {
+    window.location.href = "tel:+1234567890";
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-fade-in-up">
+    <div className="fixed bottom-24 right-6 z-50">
       <Button
-        onClick={handleCallClick}
-        className="bg-brand-green hover:bg-green-600 text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 animate-pulse-glow group"
-        title={t('common.callNow')}
+        onClick={handleCall}
+        className="h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-blue/90 shadow-lg"
+        size="icon"
       >
-        <Phone className="h-7 w-7 group-hover:animate-phone-ring" />
+        <Phone className="h-6 w-6 text-white" />
       </Button>
-      <div className="absolute -top-12 right-0 bg-gray-900 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-        {t('common.callNow')}
-      </div>
     </div>
   );
 };
