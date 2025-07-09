@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Home, MessageSquare, Plus, Edit, Trash2, LogOut, CheckCircle, XCircle, Clock, Phone, Eye } from "lucide-react";
+import { Users, Home, MessageSquare, Plus, Edit, Trash2, LogOut, CheckCircle, XCircle, Clock, Phone, Eye, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -52,6 +52,19 @@ interface PendingProperty {
   status: 'pending' | 'approved' | 'rejected';
 }
 
+interface Project {
+  id: number;
+  title: string;
+  location: string;
+  completedDate: string;
+  projectType: string;
+  client: string;
+  size: string;
+  duration: string;
+  status: 'completed';
+  image: string;
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('listings');
@@ -75,7 +88,6 @@ const Admin = () => {
     }
   ]);
 
-  // All current listings (buy, sell, rent)
   const [properties, setProperties] = useState<Property[]>([
     {
       id: 1,
@@ -166,6 +178,45 @@ const Admin = () => {
     }
   ]);
 
+  const [projects, setProjects] = useState<Project[]>([
+    {
+      id: 1,
+      title: "Skyline Business Complex",
+      location: "Downtown Financial District",
+      completedDate: "March 2024",
+      projectType: "commercial",
+      client: "Metro Corporation",
+      size: "250,000 sq ft",
+      duration: "24 months",
+      status: "completed",
+      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab"
+    },
+    {
+      id: 2,
+      title: "Green Valley Residential",
+      location: "Suburb Hills, North Side",
+      completedDate: "January 2024",
+      projectType: "residential",
+      client: "Valley Homes Ltd",
+      size: "150 units",
+      duration: "18 months",
+      status: "completed",
+      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00"
+    },
+    {
+      id: 3,
+      title: "Modern Office Tower",
+      location: "Central Business District",
+      completedDate: "November 2023",
+      projectType: "commercial",
+      client: "Tech Solutions Inc",
+      size: "180,000 sq ft",
+      duration: "30 months",
+      status: "completed",
+      image: "https://images.unsplash.com/photo-1497366216548-37526070297c"
+    }
+  ]);
+
   const [newProperty, setNewProperty] = useState({
     title: "",
     location: "",
@@ -179,16 +230,35 @@ const Admin = () => {
     status: 'active' as 'active' | 'inactive'
   });
 
+  const [newProject, setNewProject] = useState({
+    title: "",
+    location: "",
+    completedDate: "",
+    projectType: "",
+    client: "",
+    size: "",
+    duration: "",
+    status: 'completed' as 'completed',
+    image: ""
+  });
+
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [editingPendingProperty, setEditingPendingProperty] = useState<PendingProperty | null>(null);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+
   const [showPropertyDialog, setShowPropertyDialog] = useState(false);
   const [showPendingPropertyDialog, setShowPendingPropertyDialog] = useState(false);
+  const [showProjectDialog, setShowProjectDialog] = useState(false);
+
   const [showContactDialog, setShowContactDialog] = useState(false);
   const [showViewPropertyDialog, setShowViewPropertyDialog] = useState(false);
   const [showViewPendingDialog, setShowViewPendingDialog] = useState(false);
+  const [showViewProjectDialog, setShowViewProjectDialog] = useState(false);
+
   const [viewingContact, setViewingContact] = useState<ContactMessage | null>(null);
   const [viewingProperty, setViewingProperty] = useState<Property | null>(null);
   const [viewingPendingProperty, setViewingPendingProperty] = useState<PendingProperty | null>(null);
+  const [viewingProject, setViewingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('adminLoggedIn');
@@ -219,7 +289,7 @@ const Admin = () => {
       setProperties(properties.map(p => p.id === editingProperty.id ? { ...newProperty, id: editingProperty.id } : p));
       toast({ title: "Property Updated", description: "Property has been updated successfully." });
     } else {
-      const newId = Math.max(...properties.map(p => p.id)) + 1;
+      const newId = properties.length > 0 ? Math.max(...properties.map(p => p.id)) + 1 : 1;
       setProperties([...properties, { ...newProperty, id: newId }]);
       toast({ title: "Property Added", description: "New property has been added successfully." });
     }
@@ -254,9 +324,8 @@ const Admin = () => {
   };
 
   const handleApprovePendingProperty = (pendingProperty: PendingProperty) => {
-    // Convert pending property to approved property
     const newProperty: Property = {
-      id: Math.max(...properties.map(p => p.id), 0) + 1,
+      id: properties.length > 0 ? Math.max(...properties.map(p => p.id)) + 1 : 1,
       title: pendingProperty.title,
       location: pendingProperty.location,
       price: pendingProperty.propertyType === 'apartment' ? `$${pendingProperty.price}/month` : `$${pendingProperty.price}`,
@@ -324,6 +393,40 @@ const Admin = () => {
     setShowViewPendingDialog(true);
   };
 
+  const handleAddProject = () => {
+    if (editingProject) {
+      setProjects(projects.map(p => p.id === editingProject.id ? { ...newProject, id: editingProject.id } : p));
+      toast({ title: "Project Updated", description: "Project has been updated successfully." });
+    } else {
+      const newId = projects.length > 0 ? Math.max(...projects.map(p => p.id)) + 1 : 1;
+      setProjects([...projects, { ...newProject, id: newId }]);
+      toast({ title: "Project Added", description: "New project has been added successfully." });
+    }
+    
+    setNewProject({ title: "", location: "", completedDate: "", projectType: "", client: "", size: "", duration: "", status: 'completed', image: "" });
+    setEditingProject(null);
+    setShowProjectDialog(false);
+  };
+
+  const handleEditProject = (project: Project) => {
+    setNewProject(project);
+    setEditingProject(project);
+    setShowProjectDialog(true);
+  };
+
+  const handleDeleteProject = (id: number) => {
+    setProjects(projects.filter(project => project.id !== id));
+    toast({
+      title: "Project Deleted",
+      description: "Project has been removed.",
+    });
+  };
+
+  const handleViewProject = (project: Project) => {
+    setViewingProject(project);
+    setShowViewProjectDialog(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
@@ -360,6 +463,15 @@ const Admin = () => {
             <Clock className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Pending Properties</span>
             <span className="sm:hidden">Pending</span>
+          </Button>
+          <Button
+            variant={activeTab === 'projects' ? 'default' : 'outline'}
+            onClick={() => setActiveTab('projects')}
+            className="flex items-center text-xs sm:text-sm"
+          >
+            <Trophy className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Projects</span>
+            <span className="sm:hidden">Projects</span>
           </Button>
           <Button
             variant={activeTab === 'contacts' ? 'default' : 'outline'}
@@ -785,6 +897,172 @@ const Admin = () => {
           </div>
         )}
 
+        {/* Projects Tab */}
+        {activeTab === 'projects' && (
+          <div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Completed Projects</h2>
+              <Dialog open={showProjectDialog} onOpenChange={setShowProjectDialog}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => { setEditingProject(null); setNewProject({ title: "", location: "", completedDate: "", projectType: "", client: "", size: "", duration: "", status: 'completed', image: "" }); }}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    <span className="hidden sm:inline">Add Project</span>
+                    <span className="sm:hidden">Add</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[95vw] max-w-md max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>{editingProject ? 'Edit Project' : 'Add New Project'}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="project-title">Title</Label>
+                      <Input
+                        id="project-title"
+                        value={newProject.title}
+                        onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
+                        placeholder="Project title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-location">Location</Label>
+                      <Input
+                        id="project-location"
+                        value={newProject.location}
+                        onChange={(e) => setNewProject({ ...newProject, location: e.target.value })}
+                        placeholder="Project location"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-date">Completed Date</Label>
+                      <Input
+                        id="project-date"
+                        value={newProject.completedDate}
+                        onChange={(e) => setNewProject({ ...newProject, completedDate: e.target.value })}
+                        placeholder="March 2024"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-type">Project Type</Label>
+                      <Select value={newProject.projectType} onValueChange={(value) => setNewProject({ ...newProject, projectType: value })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select project type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="commercial">Commercial</SelectItem>
+                          <SelectItem value="residential">Residential</SelectItem>
+                          <SelectItem value="hospitality">Hospitality</SelectItem>
+                          <SelectItem value="renovation">Renovation</SelectItem>
+                          <SelectItem value="infrastructure">Infrastructure</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="project-client">Client</Label>
+                      <Input
+                        id="project-client"
+                        value={newProject.client}
+                        onChange={(e) => setNewProject({ ...newProject, client: e.target.value })}
+                        placeholder="Client name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-size">Size</Label>
+                      <Input
+                        id="project-size"
+                        value={newProject.size}
+                        onChange={(e) => setNewProject({ ...newProject, size: e.target.value })}
+                        placeholder="250,000 sq ft or 150 units"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-duration">Duration</Label>
+                      <Input
+                        id="project-duration"
+                        value={newProject.duration}
+                        onChange={(e) => setNewProject({ ...newProject, duration: e.target.value })}
+                        placeholder="24 months"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="project-image">Image URL</Label>
+                      <Input
+                        id="project-image"
+                        value={newProject.image}
+                        onChange={(e) => setNewProject({ ...newProject, image: e.target.value })}
+                        placeholder="https://images.unsplash.com/..."
+                      />
+                    </div>
+                    <Button onClick={handleAddProject} className="w-full">
+                      {editingProject ? 'Update Project' : 'Add Project'}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <Card>
+              <CardContent className="p-0 overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="hidden sm:table-cell">Image</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead className="hidden md:table-cell">Location</TableHead>
+                      <TableHead className="hidden lg:table-cell">Client</TableHead>
+                      <TableHead className="hidden sm:table-cell">Type</TableHead>
+                      <TableHead className="hidden lg:table-cell">Date</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {projects.map((project) => (
+                      <TableRow key={project.id}>
+                        <TableCell className="hidden sm:table-cell">
+                          <img src={project.image} alt={project.title} className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded" />
+                        </TableCell>
+                        <TableCell className="font-medium">{project.title}</TableCell>
+                        <TableCell className="hidden md:table-cell">{project.location}</TableCell>
+                        <TableCell className="hidden lg:table-cell">{project.client}</TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            project.projectType === 'commercial' ? 'bg-blue-100 text-blue-800' : 
+                            project.projectType === 'residential' ? 'bg-green-100 text-green-800' :
+                            project.projectType === 'hospitality' ? 'bg-purple-100 text-purple-800' :
+                            project.projectType === 'renovation' ? 'bg-orange-100 text-orange-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {project.projectType}
+                          </span>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">{project.completedDate}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleViewProject(project)}
+                              className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white"
+                            >
+                              <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => handleEditProject(project)}>
+                              <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                            </Button>
+                            <Button variant="destructive" size="sm" onClick={() => handleDeleteProject(project.id)}>
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Contact Messages Tab */}
         {activeTab === 'contacts' && (
           <Card>
@@ -1084,6 +1362,74 @@ const Admin = () => {
                   >
                     <Phone className="mr-2 h-4 w-4" />
                     Call Owner
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* View Project Dialog */}
+        <Dialog open={showViewProjectDialog} onOpenChange={setShowViewProjectDialog}>
+          <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Project Details</DialogTitle>
+            </DialogHeader>
+            {viewingProject && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <img 
+                      src={viewingProject.image} 
+                      alt={viewingProject.title} 
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="font-semibold">Title</Label>
+                      <p className="text-gray-700 text-lg">{viewingProject.title}</p>
+                    </div>
+                    <div>
+                      <Label className="font-semibold">Location</Label>
+                      <p className="text-gray-700">{viewingProject.location}</p>
+                    </div>
+                    <div>
+                      <Label className="font-semibold">Client</Label>
+                      <p className="text-gray-700">{viewingProject.client}</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="font-semibold">Project Type</Label>
+                        <p className="text-gray-700 capitalize">{viewingProject.projectType}</p>
+                      </div>
+                      <div>
+                        <Label className="font-semibold">Completed Date</Label>
+                        <p className="text-gray-700">{viewingProject.completedDate}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="font-semibold">Size</Label>
+                    <p className="text-gray-700">{viewingProject.size}</p>
+                  </div>
+                  <div>
+                    <Label className="font-semibold">Duration</Label>
+                    <p className="text-gray-700">{viewingProject.duration}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 pt-4">
+                  <Button
+                    onClick={() => {
+                      handleEditProject(viewingProject);
+                      setShowViewProjectDialog(false);
+                    }}
+                    variant="outline"
+                  >
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Project
                   </Button>
                 </div>
               </div>
