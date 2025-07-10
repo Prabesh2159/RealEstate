@@ -1,10 +1,12 @@
 
+
 import { useState } from "react";
 import { Search, Filter, MapPin, Bed, Bath, Square, Calendar, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Rent = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +20,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Spacious Downtown Apartment",
       location: "123 Main Street, Downtown",
-      price: "$2,200/month",
+      price: "रू 22,000/month",
       beds: 2,
       baths: 2,
       sqft: 1400,
@@ -30,7 +32,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
       title: "Modern Studio Loft",
       location: "456 Oak Avenue, Arts District",
-      price: "$1,800/month",
+      price: "रू 18,000/month",
       beds: 1,
       baths: 1,
       sqft: 900,
@@ -42,7 +44,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
       title: "Family House with Yard",
       location: "789 Pine Street, Suburbs",
-      price: "$3,500/month",
+      price: "रू 35,000/month",
       beds: 4,
       baths: 3,
       sqft: 2400,
@@ -54,7 +56,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       title: "Luxury Penthouse",
       location: "321 Tower Drive, Uptown",
-      price: "$4,200/month",
+      price: "रू 42,000/month",
       beds: 3,
       baths: 2.5,
       sqft: 2000,
@@ -66,7 +68,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
       title: "Cozy One Bedroom",
       location: "654 Elm Street, Midtown",
-      price: "$1,600/month",
+      price: "रू 16,000/month",
       beds: 1,
       baths: 1,
       sqft: 800,
@@ -78,7 +80,7 @@ const Rent = () => {
       image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
       title: "Shared Townhouse",
       location: "987 Cedar Lane, West Side",
-      price: "$2,800/month",
+      price: "रू 28,000/month",
       beds: 3,
       baths: 2.5,
       sqft: 1800,
@@ -95,19 +97,19 @@ const Rent = () => {
     
     let matchesPrice = true;
     if (priceFilter) {
-      const price = parseInt(property.price.replace(/[\$,\/month]/g, ''));
+      const price = parseInt(property.price.replace(/[रू,\/month]/g, ''));
       switch (priceFilter) {
-        case '0-1500':
-          matchesPrice = price <= 1500;
+        case '0-15000':
+          matchesPrice = price <= 15000;
           break;
-        case '1500-2500':
-          matchesPrice = price > 1500 && price <= 2500;
+        case '15000-25000':
+          matchesPrice = price > 15000 && price <= 25000;
           break;
-        case '2500-3500':
-          matchesPrice = price > 2500 && price <= 3500;
+        case '25000-35000':
+          matchesPrice = price > 25000 && price <= 35000;
           break;
-        case '3500+':
-          matchesPrice = price > 3500;
+        case '35000+':
+          matchesPrice = price > 35000;
           break;
       }
     }
@@ -116,7 +118,7 @@ const Rent = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navigation />
       
       {/* Hero Section with Bubble Effect */}
@@ -143,7 +145,7 @@ const Rent = () => {
         </div>
       </section>
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Properties for Rent</h1>
@@ -182,10 +184,10 @@ const Rent = () => {
               className="h-10 px-3 border border-gray-300 rounded-md"
             >
               <option value="">All Prices</option>
-              <option value="0-1500">Under $1,500</option>
-              <option value="1500-2500">$1,500 - $2,500</option>
-              <option value="2500-3500">$2,500 - $3,500</option>
-              <option value="3500+">$3,500+</option>
+              <option value="0-15000">Under रू 15,000</option>
+              <option value="15000-25000">रू 15,000 - रू 25,000</option>
+              <option value="25000-35000">रू 25,000 - रू 35,000</option>
+              <option value="35000+">रू 35,000+</option>
             </select>
 
             <select
@@ -201,7 +203,7 @@ const Rent = () => {
               <option value="penthouse">Penthouse</option>
             </select>
 
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Button className="bg-[#006d4e] hover:bg-[#005a3f]">
               <Filter className="mr-2 h-4 w-4" />
               Apply Filters
             </Button>
@@ -225,7 +227,7 @@ const Rent = () => {
                   alt={property.title}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold">
                   For Rent
                 </div>
                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -256,7 +258,7 @@ const Rent = () => {
                     {property.sqft} sq ft
                   </div>
                 </div>
-                <Button className="w-full bg-green-600 hover:bg-green-700">
+                <Button className="w-full bg-[#006d4e] hover:bg-[#005a3f]">
                   Contact Landlord
                 </Button>
               </CardContent>
@@ -274,13 +276,15 @@ const Rent = () => {
                 setTypeFilter("");
                 setLocationFilter("");
               }}
-              className="mt-4 bg-green-600 hover:bg-green-700"
+              className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
             >
               Clear Filters
             </Button>
           </div>
         )}
       </div>
+      
+      <Footer />
     </div>
   );
 };

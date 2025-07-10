@@ -1,10 +1,12 @@
 
+
 import { useState } from "react";
 import { Search, Filter, MapPin, Calendar, CheckCircle, Users, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +33,7 @@ const Projects = () => {
       title: "Green Valley Residential",
       location: "Suburb Hills, North Side",
       completedDate: "January 2024",
-      projectType: "residential",
+      projectType: "residential",  
       client: "Valley Homes Ltd",
       size: "150 units",
       duration: "18 months",
@@ -99,7 +101,7 @@ const Projects = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navigation />
       
       {/* Hero Section with Bubble Effect */}
@@ -126,7 +128,7 @@ const Projects = () => {
         </div>
       </section>
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Our Completed Projects</h1>
@@ -181,7 +183,7 @@ const Projects = () => {
               <option value="infrastructure">Infrastructure</option>
             </select>
 
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Button className="bg-[#006d4e] hover:bg-[#005a3f]">
               <Filter className="mr-2 h-4 w-4" />
               Apply Filters
             </Button>
@@ -205,7 +207,7 @@ const Projects = () => {
                   alt={project.title}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
                   <CheckCircle className="mr-1 h-3 w-3" />
                   Completed
                 </div>
@@ -238,10 +240,10 @@ const Projects = () => {
                   </div>
                   <div className="flex flex-col text-right">
                     <span className="font-semibold">Status</span>
-                    <span className="text-green-600 font-semibold">✓ Completed</span>
+                    <span className="text-[#006d4e] font-semibold">✓ Completed</span>
                   </div>
                 </div>
-                <Button className="w-full bg-green-600 hover:bg-green-700">
+                <Button className="w-full bg-[#006d4e] hover:bg-[#005a3f]">
                   View Project Details
                 </Button>
               </CardContent>
@@ -259,13 +261,15 @@ const Projects = () => {
                 setTypeFilter("");
                 setLocationFilter("");
               }}
-              className="mt-4 bg-green-600 hover:bg-green-700"
+              className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
             >
               Clear Filters
             </Button>
           </div>
         )}
       </div>
+      
+      <Footer />
     </div>
   );
 };
