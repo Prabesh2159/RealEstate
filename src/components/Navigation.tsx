@@ -47,66 +47,66 @@ const Navigation = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50 w-full">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo Section - Adjusted positioning */}
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
             <img
               src="/images/realstate-removebg-preview.png"
               alt="Real Estate Crafters Logo"
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
             <div className="leading-tight">
-              <p className="text-xl font-bold text-brand-green">
+              <p className="text-lg font-bold text-brand-green">
                 Real Estate Crafters
               </p>
-              <p className="text-sm text-brand-blue">
+              <p className="text-xs text-brand-blue">
                 International Private Limited
               </p>
             </div>
           </Link>
 
           {/* Desktop Nav Links and Language Toggle */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4">
             {navLinks.map(({ name, path, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
-                className={`flex items-center gap-2 px-2 py-1 text-sm font-medium transition duration-150 ${
+                className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition duration-150 rounded-md ${
                   isActive(path)
-                    ? "text-brand-green border-b-2 border-brand-green"
-                    : "text-gray-600 hover:text-brand-green"
+                    ? "text-brand-green bg-green-50 border-b-2 border-brand-green"
+                    : "text-gray-600 hover:text-brand-green hover:bg-gray-50"
                 }`}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4 w-4" />
                 {name}
               </Link>
             ))}
             
-            {/* Language Toggle Button */}
+            {/* Language Toggle Button - Made smaller */}
             <Button
               variant="outline"
               size="sm"
               onClick={toggleLanguage}
-              className="flex items-center gap-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors"
+              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors h-8 px-2 text-xs"
             >
-              <Languages className="h-4 w-4" />
+              <Languages className="h-3 w-3" />
               <span className="font-medium">
-                {language === 'en' ? 'नेपाली' : 'English'}
+                {language === 'en' ? 'नेपाली' : 'EN'}
               </span>
             </Button>
           </div>
 
           {/* Mobile Menu Toggle and Language Toggle */}
-          <div className="md:hidden flex items-center gap-3">
-            {/* Mobile Language Toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Mobile Language Toggle - Made smaller */}
             <Button
               variant="outline"
               size="sm"
               onClick={toggleLanguage}
-              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors px-2"
+              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors h-7 px-1.5 text-xs"
             >
-              <Languages className="h-4 w-4" />
+              <Languages className="h-3 w-3" />
               <span className="text-xs font-medium">
                 {language === 'en' ? 'नेपाली' : 'EN'}
               </span>
@@ -114,12 +114,12 @@ const Navigation = () => {
             
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-600 hover:text-brand-green transition"
+              className="text-gray-600 hover:text-brand-green transition p-1"
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" />
               )}
             </button>
           </div>
@@ -128,19 +128,19 @@ const Navigation = () => {
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
           <div className="md:hidden mt-2 border-t pt-4 pb-6">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
               {navLinks.map(({ name, path, icon: Icon }) => (
                 <Link
                   key={path}
                   to={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center gap-2 px-2 py-1 text-sm font-medium transition duration-150 ${
+                  className={`flex items-center gap-2 px-3 py-2 text-sm font-medium transition duration-150 rounded-md ${
                     isActive(path)
-                      ? "text-brand-green"
-                      : "text-gray-600 hover:text-brand-green"
+                      ? "text-brand-green bg-green-50"
+                      : "text-gray-600 hover:text-brand-green hover:bg-gray-50"
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4" />
                   {name}
                 </Link>
               ))}
