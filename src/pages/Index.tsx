@@ -226,8 +226,8 @@ const Index = () => {
       {/* Featured Listings */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-5xl font-bold text-[#006d4e] mb-6">{t('home.featured.title')}</h2>
-          <p className="text-green-600 text-xl">{t('home.featured.subtitle')}</p>
+          <h2 className="text-5xl font-bold  mb-6">{t('home.featured.title')}</h2>
+          <p className="text text-xl">{t('home.featured.subtitle')}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

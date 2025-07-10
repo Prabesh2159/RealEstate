@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 }
+/* Scrollbar styling for Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #006d4e; /* dark green scrollbar */
+  border-radius: 10px;
+}
+
+/* Scrollbar styling for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #006d4e #f1f1f1;
+}
+

@@ -89,8 +89,8 @@ const Chatbot = () => {
             onClick={() => setIsOpen(true)}
             className={`h-14 w-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
               isScrolled 
-                ? 'bg-brand-blue hover:bg-brand-blue/90' 
-                : 'bg-brand-green hover:bg-brand-green/90'
+                ? 'bg-brand-green hover:bg-brand-green/90' 
+                : 'bg-brand-blue hover:bg-brand-blue/90'
             }`}
             size="icon"
           >
