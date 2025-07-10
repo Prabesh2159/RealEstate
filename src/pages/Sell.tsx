@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Upload, DollarSign, Home, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { toast } from "@/hooks/use-toast";
 
 const Sell = () => {
@@ -41,11 +43,11 @@ const Sell = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navigation />
       
       {/* Hero Section with Bubble Effect */}
-      <section className="relative h-64 sm:h-80 lg:h-96 hero-bubble-bg flex items-center justify-center animate-fade-in-up overflow-hidden">
+      <section className="relative h-64 sm:h-80 lg:h-96 bg-[#006d4e] flex items-center justify-center animate-fade-in-up overflow-hidden">
         {/* Floating Bubbles */}
         <div className="bubble"></div>
         <div className="bubble"></div>
@@ -68,7 +70,7 @@ const Sell = () => {
         </div>
       </section>
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Sell Your Property</h1>
@@ -77,7 +79,7 @@ const Sell = () => {
 
         {/* Form */}
         <Card className="shadow-xl">
-          <CardHeader className="bg-green-600 text-white p-4 sm:p-6">
+          <CardHeader className="bg-[#006d4e] text-white p-4 sm:p-6">
             <CardTitle className="text-xl sm:text-2xl flex items-center">
               <Home className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
               Property Listing Form
@@ -96,7 +98,7 @@ const Sell = () => {
                     onChange={handleInputChange}
                     placeholder="e.g., Beautiful Family Home"
                     required
-                    className="mt-1 text-sm sm:text-base"
+                    className="mt-1 text-sm sm:text-base focus:border-[#006d4e]"
                   />
                 </div>
                 
@@ -111,7 +113,7 @@ const Sell = () => {
                       onChange={handleInputChange}
                       placeholder="Full address"
                       required
-                      className="pl-9 sm:pl-10 text-sm sm:text-base"
+                      className="pl-9 sm:pl-10 text-sm sm:text-base focus:border-[#006d4e]"
                     />
                   </div>
                 </div>
@@ -119,17 +121,17 @@ const Sell = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <Label htmlFor="price" className="text-sm font-medium">Price *</Label>
+                  <Label htmlFor="price" className="text-sm font-medium">Price (NPR) *</Label>
                   <div className="relative mt-1">
-                    <DollarSign className="absolute left-3 top-2.5 sm:top-3 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                    <span className="absolute left-3 top-2.5 sm:top-3 text-gray-400 text-sm">रू</span>
                     <Input
                       id="price"
                       name="price"
                       value={formData.price}
                       onChange={handleInputChange}
-                      placeholder="e.g., 450000"
+                      placeholder="e.g., 45,00,000"
                       required
-                      className="pl-9 sm:pl-10 text-sm sm:text-base"
+                      className="pl-9 sm:pl-10 text-sm sm:text-base focus:border-[#006d4e]"
                     />
                   </div>
                 </div>
@@ -142,7 +144,7 @@ const Sell = () => {
                     value={formData.propertyType}
                     onChange={handleInputChange}
                     required
-                    className="mt-1 w-full h-9 sm:h-10 px-3 border border-gray-300 rounded-md text-sm sm:text-base"
+                    className="mt-1 w-full h-9 sm:h-10 px-3 border border-gray-300 rounded-md text-sm sm:text-base focus:border-[#006d4e]"
                   >
                     <option value="">Select Type</option>
                     <option value="house">House</option>
@@ -205,18 +207,18 @@ const Sell = () => {
                   placeholder="Describe your property's features, amenities, and highlights..."
                   required
                   rows={5}
-                  className="mt-1 text-sm sm:text-base resize-none"
+                  className="mt-1 text-sm sm:text-base resize-none focus:border-[#006d4e]"
                 />
               </div>
 
               {/* Image Upload Section */}
               <div>
                 <Label className="text-sm font-medium">Property Images</Label>
-                <div className="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 lg:p-8 text-center hover:border-blue-400 transition-colors">
+                <div className="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 lg:p-8 text-center hover:border-[#006d4e] transition-colors">
                   <Upload className="mx-auto h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-400 mb-3 sm:mb-4" />
                   <p className="text-gray-500 mb-2 text-sm sm:text-base">Click to upload or drag and drop</p>
                   <p className="text-xs sm:text-sm text-gray-400">PNG, JPG, GIF up to 10MB each</p>
-                  <Button type="button" variant="outline" className="mt-3 sm:mt-4 text-sm sm:text-base">
+                  <Button type="button" variant="outline" className="mt-3 sm:mt-4 text-sm sm:text-base border-[#006d4e] text-[#006d4e] hover:bg-[#006d4e] hover:text-white">
                     Choose Files
                   </Button>
                 </div>
@@ -235,7 +237,7 @@ const Sell = () => {
                       onChange={handleInputChange}
                       placeholder="Your name"
                       required
-                      className="mt-1 text-sm sm:text-base"
+                      className="mt-1 text-sm sm:text-base focus:border-[#006d4e]"
                     />
                   </div>
 
@@ -249,7 +251,7 @@ const Sell = () => {
                       onChange={handleInputChange}
                       placeholder="your@email.com"
                       required
-                      className="mt-1 text-sm sm:text-base"
+                      className="mt-1 text-sm sm:text-base focus:border-[#006d4e]"
                     />
                   </div>
 
@@ -262,7 +264,7 @@ const Sell = () => {
                       value={formData.contactPhone}
                       onChange={handleInputChange}
                       placeholder="(555) 123-4567"
-                      className="mt-1 text-sm sm:text-base"
+                      className="mt-1 text-sm sm:text-base focus:border-[#006d4e]"
                     />
                   </div>
                 </div>
@@ -270,7 +272,7 @@ const Sell = () => {
 
               {/* Submit Button */}
               <div className="pt-4 sm:pt-6">
-                <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-base sm:text-lg py-2 sm:py-3 transition-colors duration-200">
+                <Button type="submit" className="w-full bg-[#006d4e] hover:bg-[#005a3f] text-base sm:text-lg py-2 sm:py-3 transition-colors duration-200">
                   List My Property
                 </Button>
               </div>
@@ -278,6 +280,8 @@ const Sell = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <Footer />
     </div>
   );
 };

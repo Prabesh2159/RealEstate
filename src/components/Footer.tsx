@@ -12,7 +12,13 @@ const Footer = () => {
       contact: "Contact Us",
       phone: "+977-1-4444444",
       email: "info@realestateNepal.com",
-      address: "Kathmandu, Nepal"
+      address: "Kathmandu, Nepal",
+      quickLinks: "Quick Links",
+      services: "Services",
+      propertyManagement: "Property Management",
+      homeInspection: "Home Inspection",
+      repairServices: "Repair Services",
+      realEstateInvestment: "Real Estate Investment"
     },
     np: {
       companyName: "रियल एस्टेट क्राफ्टर्स",
@@ -21,32 +27,26 @@ const Footer = () => {
       contact: "सम्पर्क गर्नुहोस्",
       phone: "+९७७-१-४४४४४४४",
       email: "info@realestateNepal.com",
-      address: "काठमाडौं, नेपाल"
+      address: "काठमाडौं, नेपाल",
+      quickLinks: "द्रुत लिङ्कहरू",
+      services: "सेवाहरू",
+      propertyManagement: "सम्पत्ति व्यवस्थापन",
+      homeInspection: "घर निरीक्षण",
+      repairServices: "मर्मत सेवाहरू",
+      realEstateInvestment: "घरजग्गा लगानी"
     }
   };
 
   const t = translations[language];
 
   return (
-    <footer className="bg-[#006d4e] text-white py-8 mt-auto">
+    <footer className="bg-[#006d4e] text-white py-16">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
-            <h3 className="text-xl font-bold mb-4">{t.companyName}</h3>
-            <p className="text-gray-200">{t.tagline}</p>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">{t.contact}</h4>
-            <div className="space-y-2 text-gray-200">
-              <p>{t.phone}</p>
-              <p>{t.email}</p>
-              <p>{t.address}</p>
-            </div>
-          </div>
-          
-          <div>
-            <div className="flex items-center space-x-4">
+            <h3 className="text-2xl font-bold mb-6 text-white">{t.companyName}</h3>
+            <p className="text-green-100 text-lg leading-relaxed">{t.tagline}</p>
+            <div className="flex items-center mt-6">
               <img
                 src="/images/realstate-removebg-preview.png"
                 alt="Logo"
@@ -54,10 +54,39 @@ const Footer = () => {
               />
             </div>
           </div>
+          
+          <div>
+            <h4 className="font-bold mb-6 text-xl text-white">{t.quickLinks}</h4>
+            <ul className="space-y-3 text-green-100">
+              <li><a href="/buy" className="hover:text-white smooth-transition text-lg">खरिद गर्नुहोस्</a></li>
+              <li><a href="/sell" className="hover:text-white smooth-transition text-lg">बेच्नुहोस्</a></li>
+              <li><a href="/rent" className="hover:text-white smooth-transition text-lg">भाडामा</a></li>
+              <li><a href="/others" className="hover:text-white smooth-transition text-lg">अन्य</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-6 text-xl text-white">{t.services}</h4>
+            <ul className="space-y-3 text-green-100">
+              <li className="text-lg">{t.propertyManagement}</li>
+              <li className="text-lg">{t.homeInspection}</li>
+              <li className="text-lg">{t.repairServices}</li>
+              <li className="text-lg">{t.realEstateInvestment}</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-6 text-xl text-white">{t.contact}</h4>
+            <div className="text-green-100 space-y-2">
+              <p className="text-lg">{t.phone}</p>
+              <p className="text-lg">{t.email}</p>
+              <p className="text-lg">{t.address}</p>
+            </div>
+          </div>
         </div>
         
-        <div className="border-t border-gray-300 mt-8 pt-6 text-center">
-          <p className="text-gray-200">{t.copyright}</p>
+        <div className="mt-12 pt-8 border-t border-green-400 text-center text-green-100">
+          <p className="text-lg">{t.copyright}</p>
         </div>
       </div>
     </footer>
