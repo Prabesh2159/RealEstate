@@ -57,7 +57,7 @@ const Navigation = () => {
               className="h-10 w-auto object-contain"
             />
             <div className="leading-tight">
-              <p className="text-lg font-bold text-brand-green">
+              <p className="text-lg font-bold text-[#006d4e]">
                 Real Estate Crafters
               </p>
               <p className="text-xs text-brand-blue">
