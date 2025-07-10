@@ -92,7 +92,7 @@ const Navigation = () => {
             >
               <Languages className="h-3 w-3" />
               <span className="font-medium">
-                {language === 'en' ? 'नेपाली' : 'EN'}
+                {language === 'en' ? 'EN-नेपा' : 'नेपा-EN'}
               </span>
             </Button>
           </div>
@@ -108,7 +108,7 @@ const Navigation = () => {
             >
               <Languages className="h-3 w-3" />
               <span className="text-xs font-medium">
-                {language === 'en' ? 'नेपाली' : 'EN'}
+                {language === 'en' ? 'EN-नेपा' : 'नेपा-EN'}
               </span>
             </Button>
             
