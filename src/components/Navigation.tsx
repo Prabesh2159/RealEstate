@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -10,8 +11,10 @@ import {
   Grid,
   PhoneCall,
   Globe,
+  Languages,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,7 +66,7 @@ const Navigation = () => {
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links and Language Toggle */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map(({ name, path, icon: Icon }) => (
               <Link
@@ -79,10 +82,36 @@ const Navigation = () => {
                 {name}
               </Link>
             ))}
+            
+            {/* Language Toggle Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors"
+            >
+              <Languages className="h-4 w-4" />
+              <span className="font-medium">
+                {language === 'en' ? 'नेपाली' : 'English'}
+              </span>
+            </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
+          {/* Mobile Menu Toggle and Language Toggle */}
+          <div className="md:hidden flex items-center gap-3">
+            {/* Mobile Language Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors px-2"
+            >
+              <Languages className="h-4 w-4" />
+              <span className="text-xs font-medium">
+                {language === 'en' ? 'नेपाली' : 'EN'}
+              </span>
+            </Button>
+            
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-600 hover:text-brand-green transition"

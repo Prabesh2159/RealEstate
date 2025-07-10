@@ -129,6 +129,7 @@ const translations = {
       rent: "भाडामा",
       others: "अन्य",
       contact: "सम्पर्क",
+      Projects: "परियोजनाहरू",
     },
     home: {
       hero: {
