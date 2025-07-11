@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
@@ -12,8 +11,12 @@ const Footer = () => {
       contact: "Contact Us",
       phone: "+977-970-7362231",
       email: "realestatecrafters1@gmail.com",
-      address: "Dhanusha,janakpur, Nepal",
+      address: "Dhanusha, Janakpur, Nepal",
       quickLinks: "Quick Links",
+      buy: "Buy", // Added English translation for "Buy"
+      sell: "Sell", // Added English translation for "Sell"
+      rent: "Rent", // Added English translation for "Rent"
+      other: "Other", // Added English translation for "Other"
       services: "Services",
       propertyManagement: "Property Management",
       homeInspection: "Home Inspection",
@@ -29,6 +32,10 @@ const Footer = () => {
       email: "realestatecrafters1@gmail.com",
       address: "धनुषा, जनकपुर, नेपाल",
       quickLinks: "द्रुत लिङ्कहरू",
+      buy: "खरिद गर्नुहोस्", // Nepali translation for "Buy"
+      sell: "बेच्नुहोस्", // Nepali translation for "Sell"
+      rent: "भाडामा", // Nepali translation for "Rent"
+      other: "अन्य", // Nepali translation for "Other"
       services: "सेवाहरू",
       propertyManagement: "सम्पत्ति व्यवस्थापन",
       homeInspection: "घर निरीक्षण",
@@ -58,10 +65,10 @@ const Footer = () => {
           <div>
             <h4 className="font-bold mb-6 text-xl text-white">{t.quickLinks}</h4>
             <ul className="space-y-3 text-green-100">
-              <li><a href="/buy" className="hover:text-white smooth-transition text-lg">खरिद गर्नुहोस्</a></li>
-              <li><a href="/sell" className="hover:text-white smooth-transition text-lg">बेच्नुहोस्</a></li>
-              <li><a href="/rent" className="hover:text-white smooth-transition text-lg">भाडामा</a></li>
-              <li><a href="/others" className="hover:text-white smooth-transition text-lg">अन्य</a></li>
+              <li><a href="/buy" className="hover:text-white smooth-transition text-lg">{t.buy}</a></li>
+              <li><a href="/sell" className="hover:text-white smooth-transition text-lg">{t.sell}</a></li>
+              <li><a href="/rent" className="hover:text-white smooth-transition text-lg">{t.rent}</a></li>
+              <li><a href="/others" className="hover:text-white smooth-transition text-lg">{t.other}</a></li>
             </ul>
           </div>
           

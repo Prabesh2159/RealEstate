@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
-
+import Footer from "@/components/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
 const Contact = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,8 +57,8 @@ const Contact = () => {
         
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <Mail className="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mb-4 sm:mb-6 animate-bounce" />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">Contact Us</h1>
-          <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">Get in touch with our team for any questions or assistance. We're here to help you with all your real estate needs.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">{t('contact.title')}</h1>
+          <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">{t('contact.subtitle')}</p>
         </div>
       </section>
       
@@ -213,7 +215,7 @@ const Contact = () => {
                 <div className="animate-fade-in-up animate-delay-500 pt-4">
                   <Button 
                     type="submit" 
-                    className="w-full h-14 bg-green-600 hover:bg-green-700 text-lg font-semibold py-4 smooth-transition hover-lift shadow-lg hover:shadow-xl rounded-lg"
+                    className="w-full h-14 bg-[#006D4E] hover:bg-[#006D4E] text-lg font-semibold py-4 smooth-transition hover-lift shadow-lg hover:shadow-xl rounded-lg"
                   >
                     Send Message
                   </Button>
@@ -226,6 +228,7 @@ const Contact = () => {
         {/* Additional spacing at bottom */}
         <div className="mt-16 sm:mt-20 lg:mt-24"></div>
       </div>
+      <Footer />
     </div>
   );
 };

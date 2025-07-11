@@ -60,7 +60,7 @@ const Navigation = () => {
               <p className="text-lg font-bold text-[#006d4e]">
                 Real Estate Crafters
               </p>
-              <p className="text-xs text-brand-blue">
+              <p className="text-xs text-brand">
                 International Private Limited
               </p>
             </div>

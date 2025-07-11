@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Footer  from "@/components/Footer";
 
 const Others = () => {
   const { t } = useLanguage();
@@ -29,37 +30,37 @@ const Others = () => {
       icon: Hammer,
       title: t('others.services.houseRenovation'),
       description: t('others.services.houseRenovationDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     },
     {
       icon: Paintbrush,
       title: t('others.services.interiorPainting'),
       description: t('others.services.interiorPaintingDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     },
     {
       icon: Palette,
       title: t('others.services.exteriorPainting'),
       description: t('others.services.exteriorPaintingDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     },
     {
       icon: Wrench,
       title: t('others.services.kitchenRenovation'),
       description: t('others.services.kitchenRenovationDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     },
     {
       icon: Home,
       title: t('others.services.bathroomRenovation'),
       description: t('others.services.bathroomRenovationDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     },
     {
       icon: Hammer,
       title: t('others.services.flooring'),
       description: t('others.services.flooringDesc'),
-      color: "bg-green-500"
+      color: "bg-[#006d4e]"
     }
   ];
 
@@ -152,7 +153,7 @@ const Others = () => {
 
         {/* Service Request Form */}
         <Card className="shadow-xl max-w-4xl mx-auto hover-lift animate-fade-in-up animate-delay-500">
-          <CardHeader className="bg-green-600 text-white p-4 sm:p-6">
+          <CardHeader className="bg-[#006D4E] text-white p-4 sm:p-6">
             <CardTitle className="text-xl sm:text-2xl flex items-center">
               <Hammer className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 animate-bounce" />
               {t('others.form.title')}
@@ -299,7 +300,7 @@ const Others = () => {
 
               {/* Submit Button */}
               <div className="pt-4 sm:pt-6 animate-fade-in-up animate-delay-1000">
-                <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-base sm:text-lg py-2 sm:py-3 smooth-transition hover-lift">
+                <Button type="submit" className="w-full bg-[#006D4E] hover:bg-[#006D4E] text-base sm:text-lg py-2 sm:py-3 smooth-transition hover-lift">
                   {t('others.form.submit')}
                 </Button>
               </div>
@@ -307,7 +308,10 @@ const Others = () => {
           </CardContent>
         </Card>
       </div>
+              <Footer/>
+
     </div>
+    
   );
 };
 
