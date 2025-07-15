@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, MapPin, DollarSign, Home, Users, Wrench } from "lucide-react";
@@ -28,13 +27,14 @@ const RainAnimation = () => {
         {[...Array(100)].map((_, i) => (
           <div
             key={i}
-            className="rain-drop absolute w-0.5 bg-gradient-to-b from-transparent via-green-200/30 to-green-300/40 animate-pulse"
+            className="rain-drop absolute w-0.5 bg-gradient-to-b from-transparent via-green-200/30 to-green-300/60 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${1 + Math.random() * 2}s`,
-              height: `${20 + Math.random() * 30}px`,
-              transform: `translateY(-${Math.random() * 100}px)`,
+              animationDuration: `${Math.random() * 2 + 3}s`, // 3-5 seconds
+              animationDelay: `${Math.random() * 5}s`, // 0-5 seconds delay
+              height: `${Math.random() * 30 + 20}px`, // 20-50px height
+              opacity: 0, // Start invisible
+              transform: 'translateY(-100vh) rotate(10deg)', // Start above viewport
             }}
           />
         ))}
@@ -55,13 +55,13 @@ const Index = () => {
       alert("Please enter a location to search");
       return;
     }
-    
+
     // Create search parameters
     const searchParams = new URLSearchParams();
     if (searchLocation) searchParams.append('location', searchLocation);
     if (priceRange) searchParams.append('price', priceRange);
     if (propertyType) searchParams.append('type', propertyType);
-    
+
     // Navigate to buy page with search parameters
     navigate(`/buy?${searchParams.toString()}`);
   };
@@ -132,23 +132,23 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      
+
       {/* Hero Section with Green Scenery and Rain */}
       <section className="relative h-[700px] flex items-center justify-center overflow-hidden bg-[#006d4e]">
         {/* Beautiful Green Scenery Background */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: 'url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
           }}
         />
-        
+
         {/* Rain Animation Overlay */}
         <RainAnimation />
-        
+
         {/* Gradient Overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#006d4e]/60 via-[#006d4e]/50 to-[#006d4e]/40" />
-        
+
         {/* Floating particles for extra atmosphere */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
@@ -172,64 +172,70 @@ const Index = () => {
           <p className="text-xl md:text-2xl mb-8 text-green-100 drop-shadow-lg animate-fade-in-up animate-delay-300">
             {t('home.hero.subtitle')}
           </p>
-          
-          {/* Enhanced Search Bar */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl max-w-4xl border border-white/20 animate-scale-in animate-delay-500">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="relative">
-                <MapPin className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
-                <Input
-                  placeholder={t('home.search.location')}
-                  value={searchLocation}
-                  onChange={(e) => setSearchLocation(e.target.value)}
-                  className="pl-12 h-12 text-gray-700 border-2 border-green-200 focus:border-[#006d4e] rounded-xl smooth-transition"
-                />
-              </div>
-              <div className="relative">
-                <DollarSign className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="w-full h-12 pl-12 pr-4 border-2 border-green-200 focus:border-[#006d4e] rounded-xl text-gray-700 smooth-transition"
-                >
-                  <option value="">{t('home.search.price')}</option>
-                  <option value="0-2000000">रू 0 - रू 20,00,000</option>
-                  <option value="2000000-5000000">रू 20,00,000 - रू 50,00,000</option>
-                  <option value="5000000+">रू 50,00,000+</option>
-                </select>
-              </div>
-              <div className="relative">
-                <Home className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
-                <select
-                  value={propertyType}
-                  onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full h-12 pl-12 pr-4 border-2 border-green-200 focus:border-[#006d4e] rounded-xl text-gray-700 smooth-transition"
-                >
-                  <option value="">{t('home.search.type')}</option>
-                  <option value="house">House</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="condo">Condo</option>
-                </select>
-              </div>
-              <Button 
-                onClick={handleSearch}
-                className="bg-[#006d4e] hover:bg-[#005a3f] h-12 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl smooth-transition hover-lift"
-              >
-                <Search className="mr-2 h-5 w-5" />
-                {t('home.search.button')}
-              </Button>
+
+        {/* Enhanced Search Bar */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl max-w-4xl border border-white/20 animate-scale-in animate-delay-500">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="relative">
+              <MapPin className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
+              <Input
+                placeholder={t('home.search.location')}
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
+                className="w-full pl-12 h-12 text-gray-700 border-2 border-green-200 focus:border-[#006d4e]
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006d4e] focus-visible:ring-offset-2
+                          rounded-xl smooth-transition"
+              />
             </div>
+            <div className="relative">
+              <DollarSign className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
+              <select
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+                className="w-full h-12 pl-12 pr-12 border-2 border-green-200 focus:border-[#006d4e]
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006d4e] focus-visible:ring-offset-2
+                          rounded-xl text-gray-700 bg-white font-medium smooth-transition appearance-none"
+              >
+                <option value="" disabled selected>{t('home.search.price')}</option> {/* Added for placeholder effect */}
+                <option value="0-2000000">रू 0 - रू 20,00,000</option>
+                <option value="2000000-5000000">रू 20,00,000 - रू 50,00,000</option>
+                <option value="5000000+">रू 50,00,000+</option>
+              </select>
+            </div>
+            <div className="relative">
+              <Home className="absolute left-4 top-4 h-5 w-5 text-[#006d4e]" />
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="w-full h-12 pl-12 pr-12 border-2 border-green-200 focus:border-[#006d4e]
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006d4e] focus-visible:ring-offset-2
+                          rounded-xl text-gray-700 bg-white font-medium smooth-transition appearance-none"
+              >
+                <option value="" disabled selected>{t('home.search.type')}</option> {/* Added for placeholder effect */}
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="condo">Condo</option>
+              </select>
+            </div>
+            <Button
+              onClick={handleSearch}
+              className="bg-[#006d4e] hover:bg-[#005a3f] h-12 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl smooth-transition hover-lift"
+            >
+              <Search className="mr-2 h-5 w-5" />
+              {t('home.search.button')}
+            </Button>
           </div>
+        </div>
         </div>
       </section>
 
       {/* Featured Listings */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-5xl font-bold  mb-6">{t('home.featured.title')}</h2>
+          <h2 className="text-5xl font-bold mb-6">{t('home.featured.title')}</h2>
           <p className="text text-xl">{t('home.featured.subtitle')}</p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {featuredProperties.map((property, index) => (
             <Card key={property.id} className={`group hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-3 rounded-2xl overflow-hidden border-2 border-green-100 hover:border-green-300 hover-lift animate-scale-in animate-delay-${200 + index * 100}`}>
@@ -251,11 +257,17 @@ const Index = () => {
                   {property.location}
                 </p>
                 <p className="text-2xl font-normal text-gray-700 mb-6">{property.price}</p>
-                <div className="flex justify-between  text-lg">
-                  <span className="font-medium">{property.beds} {t('common.beds')}</span>
-                  <span className="font-medium">{property.baths} {t('common.baths')}</span>
-                  <span className="font-medium">{property.sqft}</span>
+                <div className="flex justify-between text-sm mb-6">
+                  <span>{property.beds} {t('common.beds')}</span>
+                  <span>{property.baths} {t('common.baths')}</span>
+                  <span>{property.sqft}</span>
                 </div>
+                {/* Updated "View Details" button to match PropertyCard.tsx */}
+                <Link to={`/property/${property.id}`}>
+                  <Button className="w-full bg-[#006d4e] hover:bg-[#005a3f] text-sm sm:text-base py-2 sm:py-2.5 rounded-lg transition-all duration-200 transform hover:scale-105">
+                    {t('projects.project.viewDetails')}
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -268,7 +280,7 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             <Link to="/buy" className="group animate-fade-in-left">
               <Card className="h-80 relative overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-4 rounded-2xl border-2 border-green-200 hover:border-green-400 hover-lift">
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{
                     backgroundImage: 'url("https://images.unsplash.com/photo-1560518883-ce09059eeffa")'
@@ -285,7 +297,7 @@ const Index = () => {
 
             <Link to="/sell" className="group animate-fade-in-up animate-delay-200">
               <Card className="h-80 relative overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-4 rounded-2xl border-2 border-green-200 hover:border-green-400 hover-lift">
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{
                     backgroundImage: 'url("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136")'
@@ -302,7 +314,7 @@ const Index = () => {
 
             <Link to="/rent" className="group animate-fade-in-right animate-delay-400">
               <Card className="h-80 relative overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-4 rounded-2xl border-2 border-green-200 hover:border-green-400 hover-lift">
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{
                     backgroundImage: 'url("https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7")'
@@ -324,5 +336,4 @@ const Index = () => {
     </div>
   );
 };
-
 export default Index;

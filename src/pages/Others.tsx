@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Paintbrush, Hammer, Wrench, Palette, Home, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -82,7 +81,7 @@ const Others = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Animated Background Elements (Existing, keep if distinct, remove if replaced by hero animations) */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="floating-shape floating-shape-1">
           <Hammer className="w-20 h-20 text-green-500 animate-float" />
@@ -106,26 +105,26 @@ const Others = () => {
 
       <Navigation />
       
-      {/* Hero Section with Bubble Effect */}
-      <section className="relative h-64 sm:h-80 lg:h-96 hero-bubble-bg flex items-center justify-center animate-fade-in-up overflow-hidden">
-        {/* Floating Bubbles */}
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        
-        {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20"></div>
-        
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-          <Hammer className="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mb-4 sm:mb-6 animate-bounce" />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">{t('others.hero.title')}</h1>
-          <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">{t('others.hero.subtitle')}</p>
+      {/* Hero Section with Animations (Updated) */}
+      <section className="bg-[#006d4e] text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#006d4e] via-[#005a41] to-[#004d37]"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-20 h-20 bg-white rounded-full animate-pulse"></div>
+          <div className="absolute top-32 right-20 w-16 h-16 bg-white rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-white rounded-full animate-pulse delay-2000"></div>
+          <div className="absolute bottom-32 right-1/3 w-8 h-8 bg-white rounded-full animate-pulse delay-3000"></div>
         </div>
+        
+        <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
+          <Hammer className="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mb-4 sm:mb-6 animate-fade-in opacity-0 animation-delay-300" /> {/* Changed to fade-in */}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-fade-in opacity-0 animation-delay-300">{t('others.hero.title')}</h1> {/* Changed to fade-in */}
+          <p className="text-base sm:text-lg lg:text-xl animate-fade-in opacity-0 animation-delay-600">{t('others.hero.subtitle')}</p> {/* Changed to fade-in */}
+        </div>
+        
+        {/* Floating Animation Elements (New) */}
+        <div className="absolute top-1/2 left-0 w-4 h-4 bg-green-300 rounded-full animate-bounce opacity-30"></div>
+        <div className="absolute top-1/3 right-0 w-6 h-6 bg-green-200 rounded-full animate-bounce opacity-40 delay-500"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-3 h-3 bg-green-400 rounded-full animate-bounce opacity-50 delay-1000"></div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">

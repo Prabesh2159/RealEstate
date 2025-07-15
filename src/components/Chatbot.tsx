@@ -1,6 +1,5 @@
-
-import { useState, useEffect } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { MessageCircle, X, Send, Minus, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +14,7 @@ interface ChatMessage {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -27,8 +27,8 @@ const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Hide chatbot on admin panel
   if (location.pathname === '/admin') {
     return null;
   }
@@ -43,10 +43,15 @@ const Chatbot = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [messages, isMinimized]);
+
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
-    // Add user message
     const userMessage: ChatMessage = {
       id: Date.now(),
       text: inputMessage,
@@ -57,7 +62,6 @@ const Chatbot = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage("");
 
-    // Add bot response after a short delay
     setTimeout(() => {
       const botResponse: ChatMessage = {
         id: Date.now() + 1,
@@ -71,6 +75,7 @@ const Chatbot = () => {
 
   const handleContactFormRedirect = () => {
     setIsOpen(false);
+    setIsMinimized(false);
     navigate('/contact');
   };
 
@@ -80,17 +85,30 @@ const Chatbot = () => {
     }
   };
 
+  const toggleMinimize = () => {
+    setIsMinimized(prev => !prev);
+  };
+
+  const closeChatbot = () => {
+    setIsOpen(false);
+    setIsMinimized(false);
+  };
+
+  const openChatbot = () => {
+    setIsOpen(true);
+    setIsMinimized(false);
+  };
+
   return (
     <>
-      {/* Chat Button */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50">
           <Button
-            onClick={() => setIsOpen(true)}
+            onClick={openChatbot}
             className={`h-14 w-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
-              isScrolled 
-                ? 'bg-brand-green hover:bg-[#CFCB11]' 
-            : 'bg-[#CFCB11] hover:bg-brand-green/90'
+              isScrolled
+                ? 'bg-[#006d4e] hover:bg-[#CFCB11]'
+                : 'bg-[#CFCB11] hover:bg-brand-green/90'
             }`}
             size="icon"
           >
@@ -99,74 +117,83 @@ const Chatbot = () => {
         </div>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 sm:w-96">
-          <Card className="shadow-xl border border-gray-200">
-            <CardHeader className="bg-brand-green text-white rounded-t-lg">
+        <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ease-in-out
+          ${isMinimized ? 'w-80 h-16' : 'w-80 sm:w-96 h-[400px]'}`}>
+          <Card className="shadow-xl border border-gray-200 h-full flex flex-col">
+            <CardHeader className="bg-[#006d4e] text-white rounded-t-lg flex-shrink-0">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-lg">Real Estate Assistant</CardTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsOpen(false)}
-                  className="text-white hover:bg-white/20 h-8 w-8"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              {/* Messages */}
-              <div className="h-64 overflow-y-auto p-4 space-y-3">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-                  >
-                    <div
-                      className={`max-w-[80%] px-3 py-2 rounded-lg text-sm ${
-                        message.isBot
-                          ? 'bg-gray-100 text-gray-800'
-                          : 'bg-brand-green text-white'
-                      }`}
-                    >
-                      {message.text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Contact Form Button - Made more prominent */}
-              <div className="p-4 border-t bg-green-50">
-                <Button
-                  onClick={handleContactFormRedirect}
-                  className="w-full bg-brand-green hover:bg-brand-green/90 text-white mb-3 h-12 text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  📞 Go to Contact Form
-                </Button>
-              </div>
-
-              {/* Input */}
-              <div className="p-4 pt-0 border-t">
-                <div className="flex gap-2">
-                  <Input
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type your message..."
-                    className="flex-1"
-                  />
+                <div className="flex gap-1">
                   <Button
-                    onClick={handleSendMessage}
+                    variant="outline"
                     size="icon"
-                    className="bg-brand-green hover:bg-brand-green/90 text-white"
+                    onClick={toggleMinimize}
+                    className="text-black hover:bg-black/20 h-8 w-8"
                   >
-                    <Send className="h-4 w-4" />
+                    {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={closeChatbot}
+                    className="text-black hover:bg-[#DC143C] h-8 w-8"
+                  >
+                    <X className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-            </CardContent>
+            </CardHeader>
+
+            {!isMinimized && (
+              <CardContent className="p-0 flex-grow flex flex-col">
+                <div ref={messagesEndRef} className="h-64 overflow-y-auto p-4 space-y-3 flex-grow">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+                    >
+                      <div
+                        className={`max-w-[80%] px-3 py-2 rounded-lg text-sm ${
+                          message.isBot
+                            ? 'bg-gray-100 text-gray-800'
+                            : 'bg-[#006d4e] text-white'
+                        }`}
+                      >
+                        {message.text}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-4 pt-0 border-t flex-shrink-0">
+                  <div className="flex gap-2">
+                    <Input
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="Type your message..."
+                      className="flex-1
+                        border              // Ensure a border is present
+                        border-[#006d4e]    // Set the border color to your green
+                        focus-visible:outline-none
+                        focus-visible:ring-2
+                        focus-visible:ring-[#006d4e]
+                        focus-visible:ring-offset-2
+                        focus-visible:ring-offset-background
+                      "
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      size="icon"
+                      className="bg-[#006d4e] hover:bg-[#006d4e]/90 text-white"
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            )}
           </Card>
         </div>
       )}

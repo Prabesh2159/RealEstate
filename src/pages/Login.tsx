@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
@@ -16,8 +15,8 @@ const Login = () => {
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Specific admin credentials
   const ADMIN_EMAIL = "admin";
   const ADMIN_PASSWORD = "admin123";
 
@@ -28,16 +27,25 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsLoading(true);
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
       localStorage.setItem('adminLoggedIn', 'true');
+      localStorage.setItem('adminUser', JSON.stringify({
+        username: ADMIN_EMAIL,
+        loginTime: new Date().toISOString()
+      }));
+
       toast({
         title: "Login Successful!",
         description: "Welcome to the admin dashboard.",
       });
-      navigate('/admin');
+
+      navigate('/admin', { replace: true });
     } else {
       toast({
         title: "Login Failed",
@@ -45,14 +53,16 @@ const Login = () => {
         variant: "destructive",
       });
     }
+
+    setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <div className="max-w-md mx-auto px-4 py-16">
-        <Card className="shadow-xl">
+        <Card className="shadow-xl animate-fade-in">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-gray-800">Admin Login</CardTitle>
             <p className="text-gray-600">Access the admin dashboard</p>
@@ -71,7 +81,8 @@ const Login = () => {
                     onChange={handleInputChange}
                     placeholder="Username"
                     required
-                    className="pl-10"
+                    className="pl-10 pr-10 border !border-[#006d4e] hover:!border-[#006d4e] focus:!border-[#006d4e] focus:ring-1 focus:ring-[#006d4e] focus:outline-none transition-colors duration-200"
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -88,30 +99,28 @@ const Login = () => {
                     onChange={handleInputChange}
                     placeholder="Enter your password"
                     required
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 border !border-[#006d4e] hover:!border-[#006d4e] focus:!border-[#006d4e] focus:ring-1 focus:ring-[#006d4e] focus:outline-none transition-colors duration-200"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    disabled={isLoading}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-lg py-3">
-                Login to Admin Dashboard
+              <Button
+                type="submit"
+                className="w-full bg-[#006d4e] hover:bg-[#005a3f] text-lg py-3 transition-all duration-200 hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
+              >
+                {isLoading ? "Logging in..." : "Login to Admin Dashboard"}
               </Button>
             </form>
-
-            {/* <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-              <h4 className="font-semibold text-green-800 mb-2">Admin Credentials:</h4>
-              <p className="text-sm text-green-700">
-                <strong>Email:</strong> admin@realestate.com<br />
-                <strong>Password:</strong> RealEstate2024!
-              </p>
-            </div> */}
           </CardContent>
         </Card>
       </div>

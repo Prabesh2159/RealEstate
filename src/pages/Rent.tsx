@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Search, Filter, MapPin, Bed, Bath, Square, Calendar, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Rent = () => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -17,7 +17,7 @@ const Rent = () => {
   const rentalProperties = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab", // Image from Projects.tsx
       title: "Spacious Downtown Apartment",
       location: "123 Main Street, Downtown",
       price: "रू 22,000/month",
@@ -29,7 +29,7 @@ const Rent = () => {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
+      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00", // Image from Projects.tsx
       title: "Modern Studio Loft",
       location: "456 Oak Avenue, Arts District",
       price: "रू 18,000/month",
@@ -41,7 +41,7 @@ const Rent = () => {
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
+      image: "https://images.unsplash.com/photo-1497366216548-37526070297c", // Image from Projects.tsx
       title: "Family House with Yard",
       location: "789 Pine Street, Suburbs",
       price: "रू 35,000/month",
@@ -53,7 +53,7 @@ const Rent = () => {
     },
     {
       id: 4,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43", // Image from Projects.tsx
       title: "Luxury Penthouse",
       location: "321 Tower Drive, Uptown",
       price: "रू 42,000/month",
@@ -65,7 +65,7 @@ const Rent = () => {
     },
     {
       id: 5,
-      image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
+      image: "https://images.unsplash.com/photo-1590725140246-20acdee442be", // Image from Projects.tsx
       title: "Cozy One Bedroom",
       location: "654 Elm Street, Midtown",
       price: "रू 16,000/month",
@@ -77,7 +77,7 @@ const Rent = () => {
     },
     {
       id: 6,
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
+      image: "https://images.unsplash.com/photo-1516156008625-3a9d6067fab5", // Image from Projects.tsx
       title: "Shared Townhouse",
       location: "987 Cedar Lane, West Side",
       price: "रू 28,000/month",
@@ -117,6 +117,11 @@ const Rent = () => {
     return matchesSearch && matchesType && matchesLocation && matchesPrice;
   });
 
+  // Get translated sqft label based on language
+  const getSqftLabel = () => {
+    return t("common.sqft") || "वर्ग फिट";
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navigation />
@@ -136,20 +141,20 @@ const Rent = () => {
         <div className="bubble"></div>
         
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-[#006d4e]"></div>
         
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <Key className="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mb-4 sm:mb-6 animate-bounce" />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">Properties for Rent</h1>
-          <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">Find your perfect rental home in prime locations with flexible terms</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-slide-in-down">{t("rent.hero.title")}</h1>
+          <p className="text-base sm:text-lg lg:text-xl animate-fade-in-up animate-delay-300">{t("rent.hero.subtitle")}</p>
         </div>
       </section>
       
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Properties for Rent</h1>
-          <p className="text-gray-600 text-lg">Find your perfect rental home in prime locations</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">{t("rent.title")}</h1>
+          <p className="text-gray-600 text-lg">{t("rent.subtitle")}</p>
         </div>
 
         {/* Search and Filters */}
@@ -158,7 +163,7 @@ const Rent = () => {
             <div className="relative">
               <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <Input
-                placeholder="Search rentals..."
+                placeholder={t("rent.search.placeholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -170,7 +175,7 @@ const Rent = () => {
               onChange={(e) => setLocationFilter(e.target.value)}
               className="h-10 px-3 border border-gray-300 rounded-md"
             >
-              <option value="">All Locations</option>
+              <option value="">{t("rent.filters.allLocations")}</option>
               <option value="downtown">Downtown</option>
               <option value="uptown">Uptown</option>
               <option value="suburbs">Suburbs</option>
@@ -183,7 +188,7 @@ const Rent = () => {
               onChange={(e) => setPriceFilter(e.target.value)}
               className="h-10 px-3 border border-gray-300 rounded-md"
             >
-              <option value="">All Prices</option>
+              <option value="">{t("rent.filters.allPrices")}</option>
               <option value="0-15000">Under रू 15,000</option>
               <option value="15000-25000">रू 15,000 - रू 25,000</option>
               <option value="25000-35000">रू 25,000 - रू 35,000</option>
@@ -195,7 +200,7 @@ const Rent = () => {
               onChange={(e) => setTypeFilter(e.target.value)}
               className="h-10 px-3 border border-gray-300 rounded-md"
             >
-              <option value="">All Types</option>
+              <option value="">{t("rent.filters.allTypes")}</option>
               <option value="apartment">Apartment</option>
               <option value="house">House</option>
               <option value="studio">Studio</option>
@@ -205,7 +210,7 @@ const Rent = () => {
 
             <Button className="bg-[#006d4e] hover:bg-[#005a3f]">
               <Filter className="mr-2 h-4 w-4" />
-              Apply Filters
+              {t("rent.filters.apply")}
             </Button>
           </div>
         </div>
@@ -213,7 +218,7 @@ const Rent = () => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Showing {filteredProperties.length} of {rentalProperties.length} rental properties
+            {t("rent.results.showing")} {filteredProperties.length} {t("rent.results.of")} {rentalProperties.length} {t("rent.results.properties")}
           </p>
         </div>
 
@@ -228,7 +233,7 @@ const Rent = () => {
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  For Rent
+                  {t("rent.property.forRent")}
                 </div>
                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {property.price}
@@ -244,22 +249,23 @@ const Rent = () => {
                   <MapPin className="mr-1 h-4 w-4" />
                   {property.location}
                 </p>
+                <p className="text-2xl font-bold text-[#006d4e] mb-4">{property.price}</p>
                 <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
                   <div className="flex items-center">
                     <Bed className="mr-1 h-4 w-4" />
-                    {property.beds} bed{property.beds !== 1 ? 's' : ''}
+                    {property.beds} {t("rent.property.bed")}
                   </div>
                   <div className="flex items-center">
                     <Bath className="mr-1 h-4 w-4" />
-                    {property.baths} bath{property.baths !== 1 ? 's' : ''}
+                    {property.baths} {t("rent.property.bath")}
                   </div>
                   <div className="flex items-center">
                     <Square className="mr-1 h-4 w-4" />
-                    {property.sqft} sq ft
+                    {property.sqft} {getSqftLabel()}
                   </div>
                 </div>
                 <Button className="w-full bg-[#006d4e] hover:bg-[#005a3f]">
-                  Contact Landlord
+                  {t("rent.property.contact")}
                 </Button>
               </CardContent>
             </Card>
@@ -268,7 +274,7 @@ const Rent = () => {
 
         {filteredProperties.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No rental properties found matching your criteria.</p>
+            <p className="text-gray-500 text-lg">{t("rent.noResults.message")}</p>
             <Button 
               onClick={() => {
                 setSearchTerm("");
@@ -278,7 +284,7 @@ const Rent = () => {
               }}
               className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
             >
-              Clear Filters
+              {t("rent.noResults.clearFilters")}
             </Button>
           </div>
         )}

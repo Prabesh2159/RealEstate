@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -12,6 +11,7 @@ import {
   PhoneCall,
   Globe,
   Languages,
+  Info,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,17 @@ const Navigation = () => {
   const { language, toggleLanguage, t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    setIsMenuOpen(false);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -42,113 +53,112 @@ const Navigation = () => {
     { name: t("nav.rent"), path: "/rent", icon: Building2 },
     { name: t("nav.Projects"), path: "/projects", icon: Grid },
     { name: t("nav.others"), path: "/others", icon: Globe },
+    { name: t("nav.about"), path: "/about", icon: Info },
     { name: t("nav.contact"), path: "/contact", icon: PhoneCall },
   ];
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50 w-full">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo Section - Adjusted positioning */}
-          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <img
-              src="/images/realstate-removebg-preview.png"
-              alt="Real Estate Crafters Logo"
-              className="h-10 w-auto object-contain"
-            />
-            <div className="leading-tight">
-              <p className="text-lg font-bold text-[#006d4e]">
-                Real Estate Crafters
-              </p>
-              <p className="text-xs text-brand">
-                International Private Limited
-              </p>
+    <>
+      <header className="relative z-50">
+        <nav className="bg-white shadow-md sticky top-0 w-full h-20 box-border overflow-hidden z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div className="flex justify-between items-center h-full">
+              <div className="flex items-center gap-8 flex-shrink-0 h-full">
+                {/* Logo */}
+                <Link to="/" className="flex items-center gap-2 py-2 flex-shrink-0">
+                  <img
+                    src="/images/realstate-removebg-preview.png"
+                    alt="Real Estate Crafters Logo"
+                    className="h-10 sm:h-16 md:h-20 lg:h-20 w-auto object-contain"
+                    style={{ maxWidth: "150px" }}
+                  />
+                  <div className="flex flex-col justify-center">
+                    <p className="text-sm sm:text-lg md:text-xl font-bold text-[#006d4e] truncate">
+                      Real Estate Crafters
+                    </p>
+                    <p className="text-[10px] sm:text-sm md:text-base text-brand truncate">
+                      International Private Limited
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Desktop Navigation */}
+                <div className="hidden sm:flex items-center gap-4 lg:gap-6 xl:gap-8 flex-grow">
+                  <div className="flex items-center gap-4 lg:gap-6 xl:gap-8 flex-grow">
+                    {navLinks.map(({ name, path, icon: Icon }) => (
+                      <Link
+                        key={path}
+                        to={path}
+                        className={`relative flex items-center gap-1.5 px-2 py-1.5 text-sm lg:text-base xl:text-lg font-medium transition duration-200 rounded-md hover:scale-105 whitespace-nowrap ${
+                          isActive(path)
+                            ? "text-[#006d4e] font-semibold"
+                            : "text-gray-600 hover:text-[#006d4e] hover:bg-gray-100"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {name}
+                        {isActive(path) && (
+                          <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#006d4e] rounded-full" />
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+
+                 <Button
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-1 bg-[#006d4e] text-white text-xs px-2 py-2 h-9 hover:bg-[#006d4e] active:bg-[#006d4e] focus:bg-[#006d4e] focus:outline-none focus:ring-0 active:outline-none border-none shadow-none truncate **w-24**"
+                  >
+                  <Languages className="h-3 w-3" />
+                  <span className="truncate">{language === "en" ? "EN-नेपा" : "नेपा-EN"}</span>
+                </Button>
+                </div>
+              </div>
+
+              {/* Mobile Menu Button */}
+              <div className="sm:hidden relative z-50">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  aria-label="Toggle Menu"
+                  className="text-gray-600 hover:text-[#006d4e] p-2 transition hover:scale-110"
+                >
+                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </button>
+              </div>
             </div>
-          </Link>
-
-          {/* Desktop Nav Links and Language Toggle */}
-          <div className="hidden md:flex items-center gap-4">
-            {navLinks.map(({ name, path, icon: Icon }) => (
-              <Link
-                key={path}
-                to={path}
-                className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition duration-150 rounded-md ${
-                  isActive(path)
-                    ? "text-brand-green bg-green-50 border-b-2 border-brand-green"
-                    : "text-gray-600 hover:text-brand-green hover:bg-gray-50"
-                }`}
-              >
-                <Icon className="h-4 w-4" />
-                {name}
-              </Link>
-            ))}
-            
-            {/* Language Toggle Button - Made smaller */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors h-8 px-2 text-xs"
-            >
-              <Languages className="h-3 w-3" />
-              <span className="font-medium">
-                {language === 'en' ? 'EN-नेपा' : 'नेपा-EN'}
-              </span>
-            </Button>
           </div>
+        </nav>
 
-          {/* Mobile Menu Toggle and Language Toggle */}
-          <div className="md:hidden flex items-center gap-2">
-            {/* Mobile Language Toggle - Made smaller */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="flex items-center gap-1 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors h-7 px-1.5 text-xs"
-            >
-              <Languages className="h-3 w-3" />
-              <span className="text-xs font-medium">
-                {language === 'en' ? 'EN-नेपा' : 'नेपा-EN'}
-              </span>
-            </Button>
-            
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-600 hover:text-brand-green transition p-1"
-            >
-              {isMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-2 border-t pt-4 pb-6">
-            <div className="flex flex-col gap-3">
+          <div className="absolute top-20 left-0 w-full bg-white border-t pt-4 pb-6 z-40 shadow-lg animate-fade-in">
+            <div className="flex flex-col gap-3 px-4">
               {navLinks.map(({ name, path, icon: Icon }) => (
                 <Link
                   key={path}
                   to={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center gap-2 px-3 py-2 text-sm font-medium transition duration-150 rounded-md ${
+                  className={`flex items-center gap-2 py-2 text-sm font-medium rounded-md transition duration-200 ${
                     isActive(path)
-                      ? "text-brand-green bg-green-50"
-                      : "text-gray-600 hover:text-brand-green hover:bg-gray-50"
+                      ? "text-[#006d4e] bg-green-50 font-semibold"
+                      : "text-gray-700 hover:text-[#006d4e] hover:bg-gray-100"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
                   {name}
                 </Link>
               ))}
+              <Button
+                onClick={toggleLanguage}
+                className="mt-4 w-full flex items-center justify-center gap-2 bg-[#006d4e] text-white text-xs py-2 px-3 h-9 hover:scale-105 active:bg-[#006d4e] focus:bg-[#006d4e] focus:outline-none focus:ring-0 active:outline-none truncate"
+              >
+                <Languages className="h-3 w-3" />
+                <span className="truncate">{language === "en" ? "EN-नेपा" : "नेपा-EN"}</span>
+              </Button>
             </div>
           </div>
         )}
-      </div>
-    </nav>
+      </header>
+    </>
   );
 };
 

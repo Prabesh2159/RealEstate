@@ -1,13 +1,11 @@
-
 import { useState, useEffect } from "react";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom"; // useNavigate is no longer needed if directly calling
 
 const ClickToCall = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Hide click-to-call on admin panel
   if (location.pathname === '/admin') {
@@ -25,7 +23,8 @@ const ClickToCall = () => {
   }, []);
 
   const handleCall = () => {
-    navigate('/contact');
+    // Directly initiate a phone call using the tel: URI scheme
+    window.location.href = 'tel:+9779707362231';
   };
 
   return (
@@ -33,9 +32,9 @@ const ClickToCall = () => {
       <Button
         onClick={handleCall}
         className={`h-14 w-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
-          isScrolled 
-            ? 'bg-brand-green hover:bg-[#CFCB11]' 
-            : 'bg-[#CFCB11] hover:bg-brand-green/90'
+          isScrolled
+            ? 'bg-[#006d4e] hover:bg-[#CFCB11]' // Color when scrolled: background #006d4e, hover #CFCB11
+            : 'bg-[#CFCB11] hover:bg-brand-green/90' // Initial color: background #CFCB11, hover brand-green/90
         }`}
         size="icon"
       >
