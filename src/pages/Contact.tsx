@@ -9,33 +9,56 @@ import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import React from "react"; // Ensure React is imported for React.Fragment
+import React from "react";
+import { submitContactMessage, ContactMessageData } from "@/back/contact";
 
 const Contact = () => {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactMessageData>({
     name: "",
     email: "",
     subject: "",
     message: ""
   });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+ const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Use translated toast messages
-    toast({
-      title: t('contact.toast.title'),
-      description: t('contact.toast.description'),
-    });
-    console.log("Contact form submitted:", formData);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+
+    setIsSubmitting(true);
+
+    try {
+      await submitContactMessage(formData);
+
+      toast({
+        title: t("contact.toast.title"),
+        description: t("contact.toast.description"),
+       
+      });
+
+      // Clear form after success
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error: any) {
+      toast({
+        title: t("contact.toast.errorTitle") || "Error",
+        description:
+          typeof error === "string"
+            ? error
+            : t("contact.toast.errorDescription") || "Failed to send message.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -136,14 +159,16 @@ const Contact = () => {
 
             {/* Enhanced Map Placeholder */}
             <Card className="shadow-xl hover-lift animate-scale-in animate-delay-300 border-0 bg-white/80 backdrop-blur-sm">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14167.319760759085!2d85.91891965!3d26.719602499999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed86a51d455433%3A0x6338e55e4e7e6005!2sJanakpurdham!5e0!3m2!1sen!2snp!4v1709472093557!5m2!1sen!2snp" // Updated to a more specific Janakpurdham embed
-                className="w-full h-[450px]"
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Janakpurdham Map Location"
-              ></iframe>
+             <iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d257.8821400354347!2d85.92039370899319!3d26.71222091103103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ec41010bf6157f%3A0x33fbe9247b5b4c44!2sReal%20Estate%20Crafters%20International%20Pvt%20Ltd!5e0!3m2!1sen!2snp!4v1756445885596!5m2!1sen!2snp"
+  className="w-full h-[450px]"
+  allowFullScreen={true}
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  title="Real Estate Crafters International Pvt Ltd Map Location"
+/>
+
+
             </Card>
           </div>
 

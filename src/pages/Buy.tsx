@@ -2,7 +2,7 @@
 // src/pages/buy.tsx
 'use client'; // This directive is crucial for Next.js App Router for client-side interactivity.
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, Filter, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { listProperties, Property } from "@/back/property";
 
 const Buy = () => {
   const { t } = useLanguage(); // Use the translation hook
@@ -17,89 +18,68 @@ const Buy = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const properties = useMemo(() => [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-      title: "Luxury Villa with Pool",
-      location: "123 Ocean View Drive",
-      price: "रू 1,20,00,000",
-      beds: 5,
-      baths: 4,
-      sqft: 3500,
-      type: "house"
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=800&q=80",
-      title: "Cozy Apartment in Downtown",
-      location: "456 City Center Plaza",
-      price: "रू 45,00,000",
-      beds: 2,
-      baths: 2,
-      sqft: 1200,
-      type: "apartment"
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?auto=format&fit=crop&w=800&q=80",
-      title: "Charming House with Garden",
-      location: "789 Green Valley Road",
-      price: "रू 75,00,000",
-      beds: 3,
-      baths: 3,
-      sqft: 2000,
-      type: "house"
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
-      title: "Modern Loft in Arts District",
-      location: "101 Art Lane",
-      price: "रू 60,00,000",
-      beds: 1,
-      baths: 1,
-      sqft: 1000,
-      type: "loft"
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
-      title: "Spacious Family Home",
-      location: "222 Hilltop Avenue",
-      price: "रू 90,00,000",
-      beds: 4,
-      baths: 3,
-      sqft: 2500,
-      type: "house"
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
-      title: "Luxury Condo with City View",
-      location: "333 Skyline Boulevard",
-      price: "रू 80,00,000",
-      beds: 2,
-      baths: 2,
-      sqft: 1400,
-      type: "condo"
+  // Helper function to convert relative image URLs to absolute URLs
+  const getAbsoluteImageUrl = (imageUrl: string | File | null): string => {
+    if (!imageUrl || typeof imageUrl !== 'string') return '/api/placeholder/400/300';
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl; // Already absolute
     }
-  ], []);
+    // Convert relative URL to absolute by adding backend base URL
+    return `http://localhost:8000${imageUrl}`;
+  };
+
+  // Fetch properties for sale from API
+  useEffect(() => {
+    const fetchSaleProperties = async () => {
+      try {
+        setLoading(true);
+        console.log('🏠 Fetching properties for sale...');
+        const response = await listProperties({
+          status: 'active',
+          for_type: 'sale'
+        });
+        console.log('📋 Sale properties response:', response);
+
+        // Filter for sale properties (including backward compatibility with 'buy')
+        const saleProperties = response.results.filter(property => {
+          const forType = property.for_type as string;
+          return forType === 'sale' || forType === 'buy';
+        });
+
+        console.log('🏷️ Sale properties found:', saleProperties.length);
+        console.log('🔍 Sale properties data:', saleProperties);
+
+        setProperties(saleProperties);
+      } catch (error) {
+        console.error('❌ Error fetching sale properties:', error);
+        // Keep empty array on error
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSaleProperties();
+  }, []);
+
+
 
   const filteredProperties = useMemo(() => {
     return properties.filter(property => {
-      const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                             property.location.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesType = !typeFilter || property.type === typeFilter;
-      // Adjusted location filter logic to match actual property locations
-      const matchesLocation = !locationFilter || property.location.toLowerCase().includes(locationFilter.toLowerCase());
+      // Use correct Property interface field names
+      const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             property.address.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = !typeFilter || property.property_type === typeFilter;
+      // Adjusted location filter logic to match actual property addresses
+      const matchesLocation = !locationFilter || property.address.toLowerCase().includes(locationFilter.toLowerCase());
 
       let matchesPrice = true;
       if (priceFilter) {
-        // Parse price from string to number for comparison
-        // Remove 'रू' and commas before parsing
-        const price = parseInt(property.price.replace(/[रू,\s]/g, ''));
+        // Property.price is already a number, so use it directly
+        const price = typeof property.price === 'string' ? parseFloat(property.price) : property.price;
         switch (priceFilter) {
           case '0-5000000': // Under रू 50 Lakh
             matchesPrice = price <= 5000000;
@@ -233,26 +213,51 @@ const Buy = () => {
 
         {/* Property Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {filteredProperties.length > 0 ? (
-            filteredProperties.map((property) => (
-              <PropertyCard 
-                key={property.id} 
-                property={property}
-                bedsLabel={t("common.beds")}
-                bathsLabel={t("common.baths")}
-                sqftLabel={t("common.sqft")}
-                viewDetailsLabel={t("common.viewDetails")}
-              />
-            ))
+          {loading ? (
+            // Loading state
+            <div className="col-span-full flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#006d4e]"></div>
+              <span className="ml-4 text-lg text-gray-600">Loading properties for sale...</span>
+            </div>
+          ) : filteredProperties.length > 0 ? (
+            filteredProperties.map((property) => {
+              // Convert Property to PropertyCard format
+              const propertyCardData = {
+                id: property.id!,
+                image: getAbsoluteImageUrl(property.image),
+                title: property.name,
+                location: property.address,
+                price: `रू ${property.price.toLocaleString()}`,
+                beds: property.bedrooms,
+                baths: property.bathrooms,
+                sqft: property.area,
+                type: property.property_type
+              };
+
+              return (
+                <PropertyCard
+                  key={property.id}
+                  property={propertyCardData}
+                  bedsLabel={t("common.beds")}
+                  bathsLabel={t("common.baths")}
+                  sqftLabel={t("common.sqft")}
+                  viewDetailsLabel={t("common.viewDetails")}
+                />
+              );
+            })
           ) : (
             <div className="text-center py-12 col-span-full">
-              <p className="text-gray-500 text-base sm:text-lg mb-4">{t("buy.noResults.message")}</p>
-              <Button
-                onClick={handleClearFilters}
-                className="bg-[#006d4e] hover:bg-[#005a3f] text-sm sm:text-base transition-all duration-200"
-              >
-                {t("buy.noResults.clearFilters")}
-              </Button>
+              <p className="text-gray-500 text-base sm:text-lg mb-4">
+                {loading ? "Loading..." : t("buy.noResults.message")}
+              </p>
+              {!loading && (
+                <Button
+                  onClick={handleClearFilters}
+                  className="bg-[#006d4e] hover:bg-[#005a3f] text-sm sm:text-base transition-all duration-200"
+                >
+                  {t("buy.noResults.clearFilters")}
+                </Button>
+              )}
             </div>
           )}
         </div>

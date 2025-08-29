@@ -64,19 +64,29 @@ const Navigation = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div className="flex justify-between items-center h-full">
               <div className="flex items-center gap-8 flex-shrink-0 h-full">
-                {/* Logo */}
-                <Link to="/" className="flex items-center gap-2 py-2 flex-shrink-0">
-                  <img
-                    src="/images/realstate-removebg-preview.png"
-                    alt="Real Estate Crafters Logo"
-                    className="h-10 sm:h-16 md:h-20 lg:h-20 w-auto object-contain"
-                    style={{ maxWidth: "150px" }}
-                  />
-                  <div className="flex flex-col justify-center">
-                    <p className="text-sm sm:text-lg md:text-xl font-bold text-[#006d4e] truncate">
+                {/* Logo with smooth animations and heartbeat */}
+                <Link 
+                  to="/" 
+                  className="flex items-center gap-2 py-2 flex-shrink-0 group transition-all duration-300 ease-in-out hover:scale-105 transform"
+                >
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
+                      src="/images/reeeaallll.png"
+                      alt="Real Estate Crafters Logo"
+                      className="h-10 sm:h-16 md:h-20 lg:h-20 w-auto object-contain transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-3 transform animate-pulse"
+                      style={{ 
+                        maxWidth: "150px",
+                        padding: "3px",
+                        animation: "heartbeat 2s ease-in-out infinite"
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out opacity-0 group-hover:opacity-100"></div>
+                  </div>
+                  <div className="flex flex-col justify-center transition-all duration-300 ease-in-out group-hover:translate-x-1">
+                    <p className="text-sm sm:text-lg md:text-xl font-bold text-[#006d4e] truncate transition-all duration-300 ease-in-out group-hover:text-[#005a3f] group-hover:scale-105 transform">
                       Real Estate Crafters
                     </p>
-                    <p className="text-[10px] sm:text-sm md:text-base text-brand truncate">
+                    <p className="text-[10px] sm:text-sm md:text-base text-brand truncate transition-all duration-300 ease-in-out group-hover:text-gray-600">
                       International Private Limited
                     </p>
                   </div>
@@ -106,7 +116,7 @@ const Navigation = () => {
 
                  <Button
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1 bg-[#006d4e] text-white text-xs px-2 py-2 h-9 hover:bg-[#006d4e] active:bg-[#006d4e] focus:bg-[#006d4e] focus:outline-none focus:ring-0 active:outline-none border-none shadow-none truncate **w-24**"
+                  className="flex items-center gap-1 bg-[#006d4e] text-white text-xs px-2 py-2 h-9 hover:bg-[#006d4e] active:bg-[#006d4e] focus:bg-[#006d4e] focus:outline-none focus:ring-0 active:outline-none border-none shadow-none truncate w-24"
                   >
                   <Languages className="h-3 w-3" />
                   <span className="truncate">{language === "en" ? "EN-नेपा" : "नेपा-EN"}</span>
@@ -158,6 +168,27 @@ const Navigation = () => {
           </div>
         )}
       </header>
+
+      {/* Add custom heartbeat animation styles */}
+      <style >{`
+        @keyframes heartbeat {
+          0% {
+            transform: scale(1);
+          }
+          14% {
+            transform: scale(1.05);
+          }
+          28% {
+            transform: scale(1);
+          }
+          42% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </>
   );
 };

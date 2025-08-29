@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Filter, MapPin, Bed, Bath, Square, Calendar, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { listProperties, Property } from "@/back/property";
 
 const Rent = () => {
   const { t } = useLanguage();
@@ -13,91 +14,65 @@ const Rent = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
+  const [rentalProperties, setRentalProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const rentalProperties = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab", // Image from Projects.tsx
-      title: "Spacious Downtown Apartment",
-      location: "123 Main Street, Downtown",
-      price: "रू 22,000/month",
-      beds: 2,
-      baths: 2,
-      sqft: 1400,
-      type: "apartment",
-      available: "Available Now"
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00", // Image from Projects.tsx
-      title: "Modern Studio Loft",
-      location: "456 Oak Avenue, Arts District",
-      price: "रू 18,000/month",
-      beds: 1,
-      baths: 1,
-      sqft: 900,
-      type: "studio",
-      available: "Dec 1, 2024"
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c", // Image from Projects.tsx
-      title: "Family House with Yard",
-      location: "789 Pine Street, Suburbs",
-      price: "रू 35,000/month",
-      beds: 4,
-      baths: 3,
-      sqft: 2400,
-      type: "house",
-      available: "Available Now"
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43", // Image from Projects.tsx
-      title: "Luxury Penthouse",
-      location: "321 Tower Drive, Uptown",
-      price: "रू 42,000/month",
-      beds: 3,
-      baths: 2.5,
-      sqft: 2000,
-      type: "penthouse",
-      available: "Jan 15, 2025"
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1590725140246-20acdee442be", // Image from Projects.tsx
-      title: "Cozy One Bedroom",
-      location: "654 Elm Street, Midtown",
-      price: "रू 16,000/month",
-      beds: 1,
-      baths: 1,
-      sqft: 800,
-      type: "apartment",
-      available: "Available Now"
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1516156008625-3a9d6067fab5", // Image from Projects.tsx
-      title: "Shared Townhouse",
-      location: "987 Cedar Lane, West Side",
-      price: "रू 28,000/month",
-      beds: 3,
-      baths: 2.5,
-      sqft: 1800,
-      type: "townhouse",
-      available: "Feb 1, 2025"
+  // Helper function to convert relative image URLs to absolute URLs
+  const getAbsoluteImageUrl = (imageUrl: string | File | null): string => {
+    if (!imageUrl || typeof imageUrl !== 'string') return '/api/placeholder/400/300';
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl; // Already absolute
     }
-  ];
+    // Convert relative URL to absolute by adding backend base URL
+    return `http://localhost:8000${imageUrl}`;
+  };
+
+  // Fetch properties for rent from API
+  useEffect(() => {
+    const fetchRentProperties = async () => {
+      try {
+        setLoading(true);
+        console.log('🏠 Fetching properties for rent...');
+        const response = await listProperties({
+          status: 'active',
+          for_type: 'rent'
+        });
+        console.log('📋 Rent properties response:', response);
+
+        // Filter for rent properties
+        const rentProperties = response.results.filter(property => {
+          return property.for_type === 'rent';
+        });
+
+        console.log('🏷️ Rent properties found:', rentProperties.length);
+        console.log('🔍 Rent properties data:', rentProperties);
+
+        setRentalProperties(rentProperties);
+      } catch (error) {
+        console.error('❌ Error fetching rent properties:', error);
+        // Keep empty array on error
+        setRentalProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRentProperties();
+  }, []);
+
+
 
   const filteredProperties = rentalProperties.filter(property => {
-    const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         property.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !typeFilter || property.type === typeFilter;
-    const matchesLocation = !locationFilter || property.location.toLowerCase().includes(locationFilter.toLowerCase());
-    
+    // Use correct Property interface field names
+    const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         property.address.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = !typeFilter || property.property_type === typeFilter;
+    const matchesLocation = !locationFilter || property.address.toLowerCase().includes(locationFilter.toLowerCase());
+
     let matchesPrice = true;
     if (priceFilter) {
-      const price = parseInt(property.price.replace(/[रू,\/month]/g, ''));
+      // Property.price is already a number, so use it directly
+      const price = typeof property.price === 'string' ? parseFloat(property.price) : property.price;
       switch (priceFilter) {
         case '0-15000':
           matchesPrice = price <= 15000;
@@ -113,9 +88,14 @@ const Rent = () => {
           break;
       }
     }
-    
+
     return matchesSearch && matchesType && matchesLocation && matchesPrice;
   });
+
+  // Function to handle direct phone call
+  const handleContactAgent = () => {
+    window.location.href = 'tel:+9779707362231';
+  };
 
   // Get translated sqft label based on language
   const getSqftLabel = () => {
@@ -224,52 +204,82 @@ const Rent = () => {
 
         {/* Property Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProperties.map((property) => (
-            <Card key={property.id} className="group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2">
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
-                  src={property.image}
-                  alt={property.title}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {t("rent.property.forRent")}
-                </div>
-                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {property.price}
-                </div>
-                <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm flex items-center">
-                  <Calendar className="mr-1 h-3 w-3" />
-                  {property.available}
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{property.title}</h3>
-                <p className="text-gray-600 mb-4 flex items-center">
-                  <MapPin className="mr-1 h-4 w-4" />
-                  {property.location}
-                </p>
-                <p className="text-2xl font-bold text-[#006d4e] mb-4">{property.price}</p>
-                <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-                  <div className="flex items-center">
-                    <Bed className="mr-1 h-4 w-4" />
-                    {property.beds} {t("rent.property.bed")}
+          {loading ? (
+            // Loading state
+            <div className="col-span-full flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#006d4e]"></div>
+              <span className="ml-4 text-lg text-gray-600">Loading rental properties...</span>
+            </div>
+          ) : filteredProperties.length > 0 ? (
+            filteredProperties.map((property) => (
+              <Card key={property.id} className="group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2">
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img
+                    src={getAbsoluteImageUrl(property.image)}
+                    alt={property.name}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      console.log('Rental property image failed to load:', property.image);
+                      e.currentTarget.src = '/api/placeholder/400/300';
+                    }}
+                  />
+                  <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    {t("rent.property.forRent")}
                   </div>
-                  <div className="flex items-center">
-                    <Bath className="mr-1 h-4 w-4" />
-                    {property.baths} {t("rent.property.bath")}
+                  <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    रू {property.price.toLocaleString()}/month
                   </div>
-                  <div className="flex items-center">
-                    <Square className="mr-1 h-4 w-4" />
-                    {property.sqft} {getSqftLabel()}
+                  <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm flex items-center">
+                    <Calendar className="mr-1 h-3 w-3" />
+                    Available Now
                   </div>
                 </div>
-                <Button className="w-full bg-[#006d4e] hover:bg-[#005a3f]">
-                  {t("rent.property.contact")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{property.name}</h3>
+                  <p className="text-gray-600 mb-4 flex items-center">
+                    <MapPin className="mr-1 h-4 w-4" />
+                    {property.address}
+                  </p>
+                  <p className="text-2xl font-bold text-[#006d4e] mb-4">रू {property.price.toLocaleString()}/month</p>
+                  <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
+                    <div className="flex items-center">
+                      <Bed className="mr-1 h-4 w-4" />
+                      {property.bedrooms} {t("rent.property.bed")}
+                    </div>
+                    <div className="flex items-center">
+                      <Bath className="mr-1 h-4 w-4" />
+                      {property.bathrooms} {t("rent.property.bath")}
+                    </div>
+                    <div className="flex items-center">
+                      <Square className="mr-1 h-4 w-4" />
+                      {property.area} {getSqftLabel()}
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handleContactAgent}
+                    className="w-full bg-[#006d4e] hover:bg-[#005a3f]"
+                  >
+                    {t("rent.property.contact")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-gray-500 text-lg">{t("rent.noResults.message")}</p>
+              <Button
+                onClick={() => {
+                  setSearchTerm("");
+                  setPriceFilter("");
+                  setTypeFilter("");
+                  setLocationFilter("");
+                }}
+                className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
+              >
+                {t("rent.noResults.clearFilters")}
+              </Button>
+            </div>
+          )}
         </div>
 
         {filteredProperties.length === 0 && (

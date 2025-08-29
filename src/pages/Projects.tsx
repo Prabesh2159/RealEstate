@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, MapPin, Calendar, CheckCircle, Users, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { listProjects, Project } from "@/back/project";
 
 const Projects = () => {
   const { t } = useLanguage();
@@ -15,90 +16,51 @@ const Projects = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const completedProjects = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
-      title: "Skyline Business Complex",
-      location: "Downtown Financial District",
-      completedDate: "March 2024",
-      projectType: "commercial",
-      client: "Metro Corporation",
-      size: "250,000 sq ft",
-      duration: "24 months",
-      status: "completed"
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00",
-      title: "Green Valley Residential",
-      location: "Suburb Hills, North Side",
-      completedDate: "January 2024",
-      projectType: "residential",  
-      client: "Valley Homes Ltd",
-      size: "150 units",
-      duration: "18 months",
-      status: "completed"
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c",
-      title: "Modern Office Tower",
-      location: "Central Business District",
-      completedDate: "November 2023",
-      projectType: "commercial",
-      client: "Tech Solutions Inc",
-      size: "180,000 sq ft",
-      duration: "30 months",
-      status: "completed"
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43",
-      title: "Luxury Resort Development",
-      location: "Coastal Highway, East Bay",
-      completedDate: "September 2023",
-      projectType: "hospitality",
-      client: "Coastal Resorts Group",
-      size: "50 acres",
-      duration: "36 months",
-      status: "completed"
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1590725140246-20acdee442be",
-      title: "Heritage Mall Renovation",
-      location: "Historic Downtown Area",
-      completedDate: "July 2023",
-      projectType: "renovation",
-      client: "Heritage Properties",
-      size: "300,000 sq ft",
-      duration: "12 months",
-      status: "completed"
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1516156008625-3a9d6067fab5",
-      title: "Smart City Infrastructure",
-      location: "New Development Zone",
-      completedDate: "May 2023",
-      projectType: "infrastructure",
-      client: "City Development Authority",
-      size: "500 acres",
-      duration: "48 months",
-      status: "completed"
+  // Helper function to convert relative image URLs to absolute URLs
+  const getAbsoluteImageUrl = (imageUrl: string): string => {
+    if (!imageUrl) return '/api/placeholder/400/300';
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl; // Already absolute
     }
-  ];
+    // Convert relative URL to absolute by adding backend base URL
+    return `http://localhost:8000${imageUrl}`;
+  };
 
-  const filteredProjects = completedProjects.filter(project => {
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  // Fetch projects from API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        console.log('🏗️ Fetching projects from API...');
+        const projectsData = await listProjects();
+        console.log('📋 Projects response:', projectsData);
+
+        setProjects(projectsData);
+        console.log('🎯 Projects loaded:', projectsData.length);
+      } catch (error) {
+        console.error('❌ Error fetching projects:', error);
+        // Keep empty array on error, API has fallback mock data
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Filter projects using the correct Project interface field names
+  const filteredProjects = projects.filter(project => {
+    const matchesSearch = project.proj_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.client.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !typeFilter || project.projectType === typeFilter;
+                         project.client_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = !typeFilter || project.proj_type.toLowerCase() === typeFilter.toLowerCase();
     const matchesLocation = !locationFilter || project.location.toLowerCase().includes(locationFilter.toLowerCase());
-    const matchesStatus = !statusFilter || project.status === statusFilter;
-    
+    const matchesStatus = !statusFilter || project.proj_status.toLowerCase() === statusFilter.toLowerCase();
+
     return matchesSearch && matchesType && matchesLocation && matchesStatus;
   });
 
@@ -193,90 +155,101 @@ const Projects = () => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            {t("projects.results.showing")} {filteredProjects.length} {t("projects.results.of")} {completedProjects.length} {t("projects.results.projects")}
+            {loading ? "Loading..." : `${t("projects.results.showing")} ${filteredProjects.length} ${t("projects.results.of")} ${projects.length} ${t("projects.results.projects")}`}
           </p>
         </div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <Card 
-              key={project.id} 
-              className="group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2"
-              onClick={() => navigate(`/project/${project.id}`)}
-            >
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
-                  <CheckCircle className="mr-1 h-3 w-3" />
-                  {t("projects.project.completed")}
-                </div>
-                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {project.projectType}
-                </div>
-                <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm flex items-center">
-                  <Calendar className="mr-1 h-3 w-3" />
-                  {project.completedDate}
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{project.title}</h3>
-                <p className="text-gray-600 mb-2 flex items-center">
-                  <MapPin className="mr-1 h-4 w-4" />
-                  {project.location}
-                </p>
-                <p className="text-gray-600 mb-4 flex items-center">
-                  <Users className="mr-1 h-4 w-4" />
-                  {t("projects.project.client")}: {project.client}
-                </p>
-                <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-                  <div className="flex flex-col">
-                    <span className="font-semibold">{t("projects.project.size")}</span>
-                    <span>{project.size}</span>
+          {loading ? (
+            // Loading state
+            <div className="col-span-full flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#006d4e]"></div>
+              <span className="ml-4 text-lg text-gray-600">Loading projects...</span>
+            </div>
+          ) : filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <Card
+                key={project.id}
+                className="group hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2"
+                onClick={() => navigate(`/project/${project.id}`)}
+              >
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img
+                    src={project.image_urls && project.image_urls.length > 0 ? getAbsoluteImageUrl(project.image_urls[0]) : '/api/placeholder/400/300'}
+                    alt={project.proj_name}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      console.log('Project image failed to load:', project.image_urls?.[0]);
+                      e.currentTarget.src = '/api/placeholder/400/300';
+                    }}
+                  />
+                  <div className="absolute top-4 left-4 bg-[#006d4e] text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                    <CheckCircle className="mr-1 h-3 w-3" />
+                    {project.proj_status}
                   </div>
-                  <div className="flex flex-col text-center">
-                    <span className="font-semibold">{t("projects.project.duration")}</span>
-                    <span>{project.duration}</span>
+                  <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold capitalize">
+                    {project.proj_type}
                   </div>
-                  <div className="flex flex-col text-right">
-                    <span className="font-semibold">{t("projects.project.status")}</span>
-                    <span className="text-[#006d4e] font-semibold">✓ {t("projects.project.completed")}</span>
+                  <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm flex items-center">
+                    <Calendar className="mr-1 h-3 w-3" />
+                    {project.completed_date ? new Date(project.completed_date).toLocaleDateString() : 'In Progress'}
                   </div>
                 </div>
-                <Button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/project/${project.id}`);
-                  }}
-                  className="w-full bg-[#006d4e] hover:bg-[#005a3f]"
-                >
-                  {t("projects.project.viewDetails")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{project.proj_name}</h3>
+                  <p className="text-gray-600 mb-2 flex items-center">
+                    <MapPin className="mr-1 h-4 w-4" />
+                    {project.location}
+                  </p>
+                  <p className="text-gray-600 mb-4 flex items-center">
+                    <Users className="mr-1 h-4 w-4" />
+                    {t("projects.project.client")}: {project.client_name}
+                  </p>
+                  <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
+                    <div className="flex flex-col">
+                      <span className="font-semibold">{t("projects.project.size")}</span>
+                      <span>{project.proj_area}</span>
+                    </div>
+                    <div className="flex flex-col text-center">
+                      <span className="font-semibold">{t("projects.project.duration")}</span>
+                      <span>{project.proj_duration}</span>
+                    </div>
+                    <div className="flex flex-col text-right">
+                      <span className="font-semibold">Budget</span>
+                      <span className="text-[#006d4e] font-semibold">रू {project.proj_budget.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.scrollTo(0, 0); // Scroll to top before navigating
+                      navigate(`/project/${project.id}`);
+                    }}
+                    className="w-full bg-[#006d4e] hover:bg-[#005a3f]"
+                  >
+                    {t("projects.project.viewDetails")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-gray-500 text-lg">{t("projects.noResults.message")}</p>
+              <Button
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("");
+                  setTypeFilter("");
+                  setLocationFilter("");
+                }}
+                className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
+              >
+                {t("projects.noResults.clearFilters")}
+              </Button>
+            </div>
+          )}
         </div>
-
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">{t("projects.noResults.message")}</p>
-            <Button 
-              onClick={() => {
-                setSearchTerm("");
-                setStatusFilter("");
-                setTypeFilter("");
-                setLocationFilter("");
-              }}
-              className="mt-4 bg-[#006d4e] hover:bg-[#005a3f]"
-            >
-              {t("projects.noResults.clearFilters")}
-            </Button>
-          </div>
-        )}
       </div>
       
       <Footer />

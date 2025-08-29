@@ -7,18 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
+import { login, checkAdmin, setTokens, setAdminUser } from "@/back/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const ADMIN_EMAIL = "admin";
-  const ADMIN_PASSWORD = "admin123";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -31,27 +29,50 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      // Login and get tokens
+      const { access, refresh } = await login({
+        username: formData.username,
+        password: formData.password
+      });
 
-    if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
-      localStorage.setItem('adminLoggedIn', 'true');
-      localStorage.setItem('adminUser', JSON.stringify({
-        username: ADMIN_EMAIL,
-        loginTime: new Date().toISOString()
-      }));
+      // Store tokens
+      setTokens(access, refresh);
+
+      // Check if user is admin
+      const adminCheck = await checkAdmin(access);
+
+      if (!adminCheck.is_admin) {
+        toast({
+          title: "Access Denied",
+          description: "You are not authorized as an admin. Only superusers can access the admin dashboard.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Store admin user info
+      setAdminUser({
+        username: adminCheck.username,
+        loginTime: new Date().toISOString(),
+        is_staff: adminCheck.is_staff
+      });
 
       toast({
         title: "Login Successful!",
-        description: "Welcome to the admin dashboard.",
+        description: `Welcome to the admin dashboard, ${adminCheck.username}.`,
       });
 
-      navigate('/admin', { replace: true });
-    } else {
+      navigate("/admin", { replace: true });
+
+    } catch (error: any) {
       toast({
         title: "Login Failed",
-        description: "Invalid Username or password. Please try again.",
+        description: error.message || "Invalid username or password.",
         variant: "destructive",
       });
+      console.error("Login error:", error);
     }
 
     setIsLoading(false);
@@ -70,16 +91,16 @@ const Login = () => {
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Label htmlFor="email" className="text-sm font-medium">Username</Label>
+                <Label htmlFor="username" className="text-sm font-medium">Username</Label>
                 <div className="relative mt-1">
                   <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
-                    id="email"
-                    name="email"
+                    id="username"
+                    name="username"
                     type="text"
-                    value={formData.email}
+                    value={formData.username}
                     onChange={handleInputChange}
-                    placeholder="Username"
+                    placeholder="Enter your username"
                     required
                     className="pl-10 pr-10 border !border-[#006d4e] hover:!border-[#006d4e] focus:!border-[#006d4e] focus:ring-1 focus:ring-[#006d4e] focus:outline-none transition-colors duration-200"
                     disabled={isLoading}
