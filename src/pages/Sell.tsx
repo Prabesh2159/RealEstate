@@ -263,9 +263,9 @@ const Sell = () => {
                 >
                   <option value="">{t("sell.form.selectType")}</option>
                   <option value="House">{t("sell.form.types.house")}</option>
-                  <option value="Apartment">{t("sell.form.types.apartment")}</option>
-                  <option value="Condo">{t("sell.form.types.condo")}</option>
-                  <option value="Townhouse">{t("sell.form.types.townhouse")}</option>
+                  <option value="Land">{t("sell.form.types.land")}</option>
+                  <option value="Apartment">{t("sell.form.types.apartment")}
+                  </option>
                 </select>
               </div>
 
@@ -297,7 +297,7 @@ const Sell = () => {
                   step="0.5"
                   value={formData.no_of_bathrooms ?? ""}
                   onChange={handleInputChange}
-                  placeholder="e.g., 2.5"
+                  placeholder="e.g., 2"
                   className="mt-1 text-sm sm:text-base transition-colors duration-200"
                 />
               </div>
@@ -305,7 +305,7 @@ const Sell = () => {
               {/* Area */}
               <div>
                 <Label htmlFor="area" className="text-sm font-medium">
-                  {t("sell.form.sqft")}
+                  {t("sell.form.dhur")}
                 </Label>
                 <Input
                   id="area"
@@ -313,7 +313,7 @@ const Sell = () => {
                   type="text"
                   value={formData.area}
                   onChange={handleInputChange}
-                  placeholder="e.g., 2400"
+                  placeholder="e.g., 15 dhur/kattha"
                   className="mt-1 text-sm sm:text-base transition-colors duration-200"
                 />
               </div>

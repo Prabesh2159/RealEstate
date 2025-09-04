@@ -118,13 +118,12 @@ const translations = {
         selectType: "Select Property Type",
         types: {
           house: "House",
+          land: "Land",
           apartment: "Apartment",
-          condo: "Condo",
-          townhouse: "Townhouse"
         },
         bedrooms: "Number of Bedrooms",
         bathrooms: "Number of Bathrooms",
-        sqft: "Total Area (sq ft)",
+        dhur: "Total Area (dhur/kattha)",
         description: "Property Description",
         descriptionPlaceholder: "Provide a detailed description of your property...",
         images: "Property Images",
@@ -248,7 +247,7 @@ const translations = {
     },
     about: {
       title: "About Us",
-      subtitle: "Real Estate Crafters International Private Limited is a leading real estate company committed to providing exceptional property services.",
+      subtitle:"At Real Estate Crafters International Pvt. Ltd., we build trust through transparent real estate solutions, backed by strong investor confidence and trusted construction partnerships. Our aim is to create smart, sustainable, and community-driven projects that shape the future of real estate in Nepal.",
       stats: {
         title: "Our Achievements",
         subtitle: "Years of dedication and excellence in the real estate industry.",
@@ -282,22 +281,57 @@ const translations = {
       ceo: {
         title: "Chief Executive Officer",
         name: "Mr. Aarman",
-        description: "Leading the company with vision and expertise in real estate industry. With over 15 years of experience, he has successfully guided our organization to become a trusted name in the real estate sector."
+        description: "Leading the company with vision and expertise in real estate industry. With over 5 years of experience, he has successfully guided our organization to become a trusted name in the real estate sector."
+      },
+      investor: {
+        title: "Our Investors",
+        name: "Mr. Suman",
+        description: "An accomplished investor and visionary leader, dedicated to driving innovation and sustainable growth in the real estate sector."
+      },
+      partners: {
+        title: "Our Partners",
+        subtitle: "We collaborate with trusted partners to deliver excellence.",
+        constructionPartner: {
+          name: "Construction Partner",
+          description: "Providing quality construction services for our projects.",
+        },
+        webdevPartner: {
+          name: "Website Development Partner",
+          description: "Responsible for building and maintaining our digital presence.",
+        },
       },
       reviews: {
         title: "What Our Clients Say",
         subtitle: "Read testimonials from our satisfied customers who have experienced our exceptional service.",
         client1: {
-          name: "Aashutosh Bhattarai",
+          name: "Sumit Sah",
+          title: "Happy Client",
           review: "Excellent service! They helped me find my dream home within my budget. Highly professional and reliable."
         },
         client2: {
           name: "Prabesh Ojha",
+          title: "Real estate developer",
           review: "Outstanding experience selling my property. The team was very supportive throughout the entire process."
         },
         client3: {
-          name: "Arjun Dahal",
+          name: "Depak Suman Jha",
+          title: "Satisfied client",
           review: "Great rental service! Found the perfect apartment in my preferred location. Very responsive team."
+        },
+        client4: {
+          name: "Deepak Jha",
+          title: "Satisfied client",
+          review: "The team made buying my first home a smooth and stress-free process. They were knowledgeable and attentive to all my needs."
+        },
+        client5: {
+          name: "Mahesh Yadav",
+          title: "Satisfied client",
+          review: "I was amazed at how quickly my property sold. The marketing was top-notch, and their negotiation skills are excellent."
+        },
+        client6: {
+          name: "Nasibul Rayeen",
+          title: "Satisfied client",
+          review: "Their expertise in the market helped me find a great investment property. I highly recommend them for anyone looking to invest."
         }
       }
     },
@@ -619,7 +653,7 @@ const translations = {
         size: "आकार",
         duration: "अवधि",
         status: "स्थिति",
-        viewDetails: "विवरण हेर्नुहोस्" // Added for projects.project
+        viewDetails: "विवरण हेर्नुहोस्"
       },
       noResults: {
         message: "तपाईंको मापदण्ड मिल्ने कुनै परियोजनाहरू फेला परेनन्।",
@@ -662,22 +696,57 @@ const translations = {
       ceo: {
         title: "प्रमुख कार्यकारी अधिकृत",
         name: "श्री अरमान",
-        description: "घर जग्गा उद्योगमा दूरदृष्टि र विशेषज्ञताका साथ कम्पनीको नेतृत्व गर्दै। १५ वर्षभन्दा बढीको अनुभवका साथ, उहाँले हाम्रो संस्थालाई घर जग्गा क्षेत्रमा एक विश्वसनीय नाम बनाउन सफलतापूर्वक मार्गदर्शन गर्नुभएको छ।"
+        description: "घर जग्गा उद्योगमा दूरदृष्टि र विशेषज्ञताका साथ कम्पनीको नेतृत्व गर्दै। ५ वर्षभन्दा बढीको अनुभवका साथ, उहाँले हाम्रो संस्थालाई घर जग्गा क्षेत्रमा एक विश्वसनीय नाम बनाउन सफलतापूर्वक मार्गदर्शन गर्नुभएको छ।"
+      },
+      investor: {
+        title: "हाम्रो लगानीकर्ता",
+        name: "श्री सुमन",
+        description: "एक कुशल लगानीकर्ता र दूरदर्शी नेता, घरजग्गा क्षेत्रमा नवीनता र दिगो विकास ल्याउन समर्पित।"
+      },
+      partners: {
+        title: "हाम्रा साझेदारहरू",
+        subtitle: "उत्कृष्टता प्रदान गर्न हामी विश्वसनीय साझेदारहरूसँग सहकार्य गर्छौं।",
+        constructionPartner: {
+          name: "निर्माण साझेदार",
+          description: "हाम्रा परियोजनाहरूको लागि गुणस्तरीय निर्माण सेवाहरू प्रदान गर्दै।",
+        },
+        webdevPartner: {
+          name: "वेबसाइट विकास साझेदार",
+          description: "हाम्रो डिजिटल उपस्थिति निर्माण र मर्मत गर्न जिम्मेवार।",
+        },
       },
       reviews: {
         title: "हाम्रा ग्राहकहरू के भन्छन्",
         subtitle: "हाम्रो असाधारण सेवा अनुभव गरेका सन्तुष्ट ग्राहकहरूका प्रशंसापत्रहरू पढ्नुहोस्।",
         client1: {
-          name: "आशुतोष भट्टराई",
+          name: "सुमित साह",
+          title: "सन्तुष्ट ग्राहक",
           review: "उत्कृष्ट सेवा! उनीहरूले मलाई मेरो बजेट भित्र मेरो सपनाको घर फेला पार्न मद्दत गरे। निकै व्यावसायिक र विश्वसनीय।"
         },
         client2: {
           name: "प्रवेश ओझा",
+          title: "घर जग्गा विकासकर्ता",
           review: "मेरो सम्पत्ति बेच्नमा उत्कृष्ट अनुभव। टोलीले पूरै प्रक्रियामा धेरै सहयोग गर्यो।"
         },
         client3: {
-          name: "अर्जुन दाहाल",
+          name: "दिपक सुमन झा",
+          title: "सन्तुष्ट ग्राहक",
           review: "मैले मेरो मनपर्ने स्थानमा उत्तम अपार्टमेन्ट फेला पारे। धेरै प्रतिक्रियाशील टोली अनि उस्तै उत्कृष्ट सेवा ।"
+        },
+        client4: {
+          name: "दीपक झा",
+          title: "सन्तुष्ट ग्राहक",
+          review: "टोलीले मेरो पहिलो घर किन्नलाई सहज र तनावमुक्त प्रक्रिया बनायो। तिनीहरू जानकार र मेरा सबै आवश्यकताहरूमा ध्यान दिएका थिए।"
+        },
+        client5: {
+          name: "महेश यादव",
+          title: "सम्पत्ति बिक्रेता",
+          review: "मेरो सम्पत्ति कति छिटो बिक्यो भनेर म छक्क परें। मार्केटिंग उत्कृष्ट थियो, र तिनीहरूको वार्ता कौशल उत्कृष्ट छ।"
+        },
+        client6: {
+          name: "नसिबुल रायन",
+          title: "सन्तुष्ट ग्राहक",
+          review: "बजारमा उनीहरूको विशेषज्ञताले मलाई राम्रो लगानी सम्पत्ति फेला पार्न मद्दत गर्यो। म लगानी गर्न खोज्ने जो कोहीलाई पनि उनीहरूलाई सिफारिस गर्दछु।"
         }
       }
     },
@@ -766,7 +835,7 @@ const translations = {
       sqft: "वर्ग फिट",
       callNow: "अहिले कल गर्नुहोस्",
       phone: "फोन",
-      viewDetails: "विवरण हेर्नुहोस्", // Added for common
+      viewDetails: "विवरण हेर्नुहोस्",
     },
   },
 };

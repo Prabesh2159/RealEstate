@@ -1,19 +1,30 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, MapPin, User, Award, Users, Briefcase, Star } from "lucide-react";
+import {
+  Building2,
+  MapPin,
+  User,
+  Award,
+  Users,
+  Briefcase,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { title } from "process";
 
 const About = () => {
   const { t } = useLanguage();
-  
+
   // Animation states for statistics
   const [experienceCount, setExperienceCount] = useState(0);
   const [projectsCount, setProjectsCount] = useState(0);
   const [clientsCount, setClientsCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0); // Set to 0 to start with the first review
 
   // Target values
   const targetExperience = 15;
@@ -31,7 +42,7 @@ const About = () => {
       { threshold: 0.1 }
     );
 
-    const statsSection = document.getElementById('stats-section');
+    const statsSection = document.getElementById("stats-section");
     if (statsSection) {
       observer.observe(statsSection);
     }
@@ -70,54 +81,95 @@ const About = () => {
     {
       name: t("about.branches.branch1.name"),
       location: t("about.branches.branch1.location"),
-      image: "/public/images/kathmandu.jpg"
+      image: "/public/images/ktm.jpg",
     },
     {
       name: t("about.branches.branch2.name"),
       location: t("about.branches.branch2.location"),
-      image: "/public/images/pokhara.jpg"
+      image: "/public/images/pkh.jpg",
     },
     {
       name: t("about.branches.branch3.name"),
       location: t("about.branches.branch3.location"),
-      image: "public/images/bardibas.jpg"
+      image: "public/images/bdb.png",
     },
     {
       name: t("about.branches.branch4.name"),
       location: t("about.branches.branch4.location"),
-      image: "public/images/janakpur.jpg"
-    }
+      image: "public/images/jkp.png",
+    },
   ];
 
-  // Sample client reviews - in real app, this would come from admin panel
+  // Sample client reviews
   const clientReviews = [
     {
       id: 1,
       name: t("about.reviews.client1.name"),
+      title: "Satisfied client",
       rating: 5,
       review: t("about.reviews.client1.review"),
-      image: "public/images/Aashu.jpg"
+      image: "public/images/cl1.jpg",
     },
     {
       id: 2,
       name: t("about.reviews.client2.name"),
+      title: "Real estate developer",
       rating: 5,
       review: t("about.reviews.client2.review"),
-      image: "public/images/Prabesh.JPG"
+      image: "public/images/Prabesh.JPG",
     },
     {
       id: 3,
       name: t("about.reviews.client3.name"),
-      rating: 4,
+      title: "Satisfied client",
+      rating: 5,
       review: t("about.reviews.client3.review"),
-      image: "public/images/Aj.jpg"
+      image: "public/images/cl2.jpg",
+    },
+    {
+      id: 4,
+      name: t("about.reviews.client4.name"),
+      title: "Satisfied client",
+      rating: 5,
+      review: t("about.reviews.client4.review"),
+      image: "public/images/cl3.jpg",
+    },
+    {
+      id: 5,
+      name: t("about.reviews.client5.name"),
+      title: "Satisfied client",
+      rating: 5,
+      review: t("about.reviews.client5.review"),
+      image: "public/images/cl4.jpg",
+    },
+    {
+      id: 6,
+      name: t("about.reviews.client6.name"),
+      title: "Satisfied client",
+      rating: 4,
+      review: t("about.reviews.client6.review"),
+      image: "public/images/cl5.jpg",
     }
   ];
+
+  const handleNextReview = () => {
+    setCurrentReviewIndex((prevIndex) =>
+      prevIndex === clientReviews.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handlePrevReview = () => {
+    setCurrentReviewIndex((prevIndex) =>
+      prevIndex === 0 ? clientReviews.length - 1 : prevIndex - 1
+    );
+  };
+
+  const currentReview = clientReviews[currentReviewIndex];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section with Animations */}
       <section className="bg-[#006d4e] text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#006d4e] via-[#005a41] to-[#004d37]"></div>
@@ -127,7 +179,7 @@ const About = () => {
           <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-white rounded-full animate-pulse delay-2000"></div>
           <div className="absolute bottom-32 right-1/3 w-8 h-8 bg-white rounded-full animate-pulse delay-3000"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in opacity-0 animation-delay-300">
             {t("about.title")}
@@ -136,7 +188,7 @@ const About = () => {
             {t("about.subtitle")}
           </p>
         </div>
-        
+
         {/* Floating Animation Elements */}
         <div className="absolute top-1/2 left-0 w-4 h-4 bg-green-300 rounded-full animate-bounce opacity-30"></div>
         <div className="absolute top-1/3 right-0 w-6 h-6 bg-green-200 rounded-full animate-bounce opacity-40 delay-500"></div>
@@ -218,14 +270,18 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {branches.map((branch, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300 hover-scale">
+              <Card
+                key={index}
+                className="overflow-hidden hover:shadow-lg transition-shadow duration-300 hover-scale"
+              >
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={branch.image}
                     alt={branch.name}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     onError={(e) => {
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop";
+                      e.currentTarget.src =
+                        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop";
                     }}
                   />
                 </div>
@@ -267,7 +323,8 @@ const About = () => {
                         alt={t("about.ceo.name")}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.currentTarget.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop";
+                          e.currentTarget.src =
+                            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop";
                         }}
                       />
                     </div>
@@ -284,6 +341,101 @@ const About = () => {
                     </p>
                   </div>
                 </div>
+                {/* Investor Section */}
+                <section className="py-20 bg-white">
+                  <div className="max-w-7xl mx-auto px-4">
+                    <div className="text-center mb-16">
+                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        {t("about.investor.title")}
+                      </h2>
+                    </div>
+
+                    <div className="max-w-4xl mx-auto">
+                      <Card className="overflow-hidden">
+                        <CardContent className="p-8">
+                          <div className="flex flex-col md:flex-row items-center gap-8">
+                            <div className="flex-shrink-0">
+                              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-green-200">
+                                <img
+                                  src="public/images/investor.jpg" // 👈 replace with actual investor image
+                                  alt={t("about.investor.name")}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.currentTarget.src =
+                                      "https://images.unsplash.com/photo-1603415526960-f7e0328b1d4a?w=400&h=400&fit=crop";
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="flex-1 text-center md:text-left">
+                              <div className="flex items-center gap-2 justify-center md:justify-start mb-4">
+                                <User className="h-6 w-6 text-[#006d4e]" />
+                                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                  {t("about.investor.name")}
+                                </h3>
+                              </div>
+                              <p className="text-lg text-gray-600 leading-relaxed">
+                                {t("about.investor.description")}
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </section>
+                {/* Partners Section */}
+                <section className="py-20 bg-gray-50">
+                  <div className="max-w-7xl mx-auto px-4">
+                    <div className="text-center mb-16">
+                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Our Partners
+                      </h2>
+                      <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        We collaborate with trusted partners to deliver
+                        excellence.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                      {/* Construction Partner */}
+                      <div className="bg-white shadow-lg rounded-2xl overflow-hidden p-8 flex flex-col items-center text-center">
+                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-green-200 mb-6">
+                          <img
+                            src="/images/construction.jpg" // replace with your image
+                            alt="Construction Partner"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          Construction Partner
+                        </h3>
+                        <p className="text-gray-600">
+                          Providing quality construction services for our
+                          projects.
+                        </p>
+                      </div>
+
+                      {/* Website Development Partner */}
+                      <div className="bg-white shadow-lg rounded-2xl overflow-hidden p-8 flex flex-col items-center text-center">
+                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-green-200 mb-6">
+                          <img
+                            src="/images/clickd.png" // replace with your image
+                            alt="Website Development Partner"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          Website Development Partner
+                        </h3>
+                        <p className="text-gray-600">
+                          Responsible for building and maintaining our digital
+                          presence.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </CardContent>
             </Card>
           </div>
@@ -302,29 +454,55 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {clientReviews.map((review) => (
-              <Card key={review.id} className="hover:shadow-lg transition-shadow duration-300 hover-scale">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={review.image}
-                      alt={review.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{review.name}</h4>
-                      <div className="flex items-center gap-1">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
+          <div className="relative">
+            {/* Previous Review Button with enhanced styling */}
+            <button
+              onClick={handlePrevReview}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-3 bg-gray-200 rounded-full hover:bg-[#006d4e] transition-colors duration-300 shadow-md group"
+              aria-label="Previous review"
+            >
+              <ChevronLeft className="h-6 w-6 text-gray-600 group-hover:text-white transition-colors duration-300" />
+            </button>
+
+            <Card className="hover:shadow-lg transition-shadow duration-300 hover-scale max-w-2xl mx-auto">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center gap-4 mb-4 text-center">
+                  <img
+                    src={currentReview.image}
+                    alt={currentReview.name}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                  <div>
+                    <h4 className="font-semibold text-xl text-gray-900">
+                      {currentReview.name}
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {currentReview.title}
+                    </p>
+                    <div className="flex items-center justify-center gap-1 mt-1">
+                      {[...Array(currentReview.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
                     </div>
                   </div>
-                  <p className="text-gray-600 italic">"{review.review}"</p>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+                <p className="text-gray-600 italic text-center">
+                  "{currentReview.review}"
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Next Review Button with enhanced styling */}
+            <button
+              onClick={handleNextReview}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-3 bg-gray-200 rounded-full hover:bg-[#006d4e] transition-colors duration-300 shadow-md group"
+              aria-label="Next review"
+            >
+              <ChevronRight className="h-6 w-6 text-gray-600 group-hover:text-white transition-colors duration-300" />
+            </button>
           </div>
         </div>
       </section>

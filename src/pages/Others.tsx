@@ -210,7 +210,7 @@ const Others = () => {
                     type="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="(555) 123-4567"
+                    placeholder="+977 98XXXXXXXX"
                     required
                     className="mt-1 text-sm sm:text-base smooth-transition"
                   />

@@ -43,7 +43,6 @@ const RainAnimation = () => {
     </>
   );
 };
-
 // Land Unit Conversion Calculator Component
 const LandUnitCalculator = () => {
   // State for each unit
@@ -52,84 +51,128 @@ const LandUnitCalculator = () => {
   const [dhur, setDhur] = useState("");
   const [ropani, setRopani] = useState("");
   const [aana, setAana] = useState("");
+  const [paisa, setPaisa] = useState("");
+  const [daam, setDaam] = useState("");
   const [sqft, setSqft] = useState("");
   const [active, setActive] = useState("sqft"); // Which field was last edited
 
-  // Conversion constants
-  const BIGHA_TO_KATTHA = 20;
-  const KATTHA_TO_DHUR = 20;
-  const BIGHA_TO_SQFT = 13552.5;
-  const KATTHA_TO_SQFT = 677.625;
-  const DHUR_TO_SQFT = 33.88125;
-  const ROPANI_TO_AANA = 16;
+  // Conversion constants (from screenshot)
+  const BIGHA_TO_SQFT = 72900;
+  const KATTHA_TO_SQFT = 3645;
+  const DHUR_TO_SQFT = 182.25;
   const ROPANI_TO_SQFT = 5476;
   const AANA_TO_SQFT = 342.25;
+  const PAISA_TO_SQFT = 85.56;
+  const DAAM_TO_SQFT = 21.39;
 
   // Helper: clear all except the one being edited
-  const clearOthers = (except: string) => {
+  const clearOthers = (except) => {
     if (except !== "bigha") setBigha("");
     if (except !== "kattha") setKattha("");
     if (except !== "dhur") setDhur("");
     if (except !== "ropani") setRopani("");
     if (except !== "aana") setAana("");
+    if (except !== "paisa") setPaisa("");
+    if (except !== "daam") setDaam("");
     if (except !== "sqft") setSqft("");
   };
 
   // Conversion logic
-  const handleChange = (unit: string, value: string) => {
+  const handleChange = (unit, value) => {
     if (!/^\d*\.?\d*$/.test(value)) return; // Only allow numbers
     setActive(unit);
     clearOthers(unit);
     if (value === "") {
-      setBigha(""); setKattha(""); setDhur(""); setRopani(""); setAana(""); setSqft("");
+      setBigha(""); setKattha(""); setDhur(""); setRopani("");
+      setAana(""); setPaisa(""); setDaam(""); setSqft("");
       return;
     }
     const v = parseFloat(value);
     if (isNaN(v)) return;
+
     switch (unit) {
       case "bigha": {
+        const sqftVal = v * BIGHA_TO_SQFT;
         setBigha(value);
-        setKattha((v * BIGHA_TO_KATTHA).toString());
-        setDhur((v * BIGHA_TO_KATTHA * KATTHA_TO_DHUR).toString());
-        setSqft((v * BIGHA_TO_SQFT).toString());
-        setRopani((v * BIGHA_TO_SQFT / ROPANI_TO_SQFT).toFixed(6));
-        setAana((v * BIGHA_TO_SQFT / AANA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
         break;
       }
       case "kattha": {
+        const sqftVal = v * KATTHA_TO_SQFT;
         setKattha(value);
-        setBigha((v / BIGHA_TO_KATTHA).toString());
-        setDhur((v * KATTHA_TO_DHUR).toString());
-        setSqft((v * KATTHA_TO_SQFT).toString());
-        setRopani((v * KATTHA_TO_SQFT / ROPANI_TO_SQFT).toFixed(6));
-        setAana((v * KATTHA_TO_SQFT / AANA_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
         break;
       }
       case "dhur": {
+        const sqftVal = v * DHUR_TO_SQFT;
         setDhur(value);
-        setKattha((v / KATTHA_TO_DHUR).toString());
-        setBigha((v / (BIGHA_TO_KATTHA * KATTHA_TO_DHUR)).toString());
-        setSqft((v * DHUR_TO_SQFT).toString());
-        setRopani((v * DHUR_TO_SQFT / ROPANI_TO_SQFT).toFixed(6));
-        setAana((v * DHUR_TO_SQFT / AANA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
         break;
       }
       case "ropani": {
+        const sqftVal = v * ROPANI_TO_SQFT;
         setRopani(value);
-        setAana((v * ROPANI_TO_AANA).toString());
-        setSqft((v * ROPANI_TO_SQFT).toString());
-        setBigha((v * ROPANI_TO_SQFT / BIGHA_TO_SQFT).toFixed(6));
-        setKattha((v * ROPANI_TO_SQFT / KATTHA_TO_SQFT).toFixed(6));
-        setDhur((v * ROPANI_TO_SQFT / DHUR_TO_SQFT).toFixed(6));
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
         break;
       }
       case "aana": {
+        const sqftVal = v * AANA_TO_SQFT;
         setAana(value);
-        setRopani((v / ROPANI_TO_AANA).toString());
-        setSqft((v * AANA_TO_SQFT).toString());
-        setBigha((v * AANA_TO_SQFT / BIGHA_TO_SQFT).toFixed(6));
-        setKattha((v * AANA_TO_SQFT / KATTHA_TO_SQFT).toFixed(6));
-        setDhur((v * AANA_TO_SQFT / DHUR_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
+        break;
+      }
+      case "paisa": {
+        const sqftVal = v * PAISA_TO_SQFT;
+        setPaisa(value);
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setDaam((sqftVal / DAAM_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
+        break;
+      }
+      case "daam": {
+        const sqftVal = v * DAAM_TO_SQFT;
+        setDaam(value);
+        setPaisa((sqftVal / PAISA_TO_SQFT).toFixed(6));
+        setAana((sqftVal / AANA_TO_SQFT).toFixed(6));
+        setRopani((sqftVal / ROPANI_TO_SQFT).toFixed(6));
+        setBigha((sqftVal / BIGHA_TO_SQFT).toFixed(6));
+        setKattha((sqftVal / KATTHA_TO_SQFT).toFixed(6));
+        setDhur((sqftVal / DHUR_TO_SQFT).toFixed(6));
+        setSqft(sqftVal.toFixed(2));
         break;
       }
       case "sqft": {
@@ -139,6 +182,8 @@ const LandUnitCalculator = () => {
         setDhur((v / DHUR_TO_SQFT).toFixed(6));
         setRopani((v / ROPANI_TO_SQFT).toFixed(6));
         setAana((v / AANA_TO_SQFT).toFixed(6));
+        setPaisa((v / PAISA_TO_SQFT).toFixed(6));
+        setDaam((v / DAAM_TO_SQFT).toFixed(6));
         break;
       }
     }
@@ -175,6 +220,16 @@ const LandUnitCalculator = () => {
               className="w-full border-2 border-green-200 rounded-lg px-4 py-2 focus:border-[#006d4e] focus:ring-2 focus:ring-[#006d4e] outline-none" placeholder="0" />
           </div>
           <div>
+            <label className="block text-gray-700 font-medium mb-1">Paisa</label>
+            <input type="text" value={paisa} onChange={e => handleChange("paisa", e.target.value)}
+              className="w-full border-2 border-green-200 rounded-lg px-4 py-2 focus:border-[#006d4e] focus:ring-2 focus:ring-[#006d4e] outline-none" placeholder="0" />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Daam</label>
+            <input type="text" value={daam} onChange={e => handleChange("daam", e.target.value)}
+              className="w-full border-2 border-green-200 rounded-lg px-4 py-2 focus:border-[#006d4e] focus:ring-2 focus:ring-[#006d4e] outline-none" placeholder="0" />
+          </div>
+          <div>
             <label className="block text-gray-700 font-medium mb-1">Sq. Ft.</label>
             <input type="text" value={sqft} onChange={e => handleChange("sqft", e.target.value)}
               className="w-full border-2 border-green-200 rounded-lg px-4 py-2 focus:border-[#006d4e] focus:ring-2 focus:ring-[#006d4e] outline-none" placeholder="0" />
@@ -184,6 +239,7 @@ const LandUnitCalculator = () => {
     </Card>
   );
 };
+
 
 const Index = () => {
   const navigate = useNavigate();

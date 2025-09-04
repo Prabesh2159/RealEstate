@@ -1,6 +1,6 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
-
+import { Facebook, Instagram, Youtube } from "lucide-react";
 const Footer = () => {
   const { language } = useLanguage();
 
@@ -69,7 +69,7 @@ const Footer = () => {
             <p className="text-green-100 text-lg leading-relaxed">{t.tagline}</p>
             <div className="flex items-center mt-6">
               <img
-                src="/images/realstate-removebg-preview.png"
+                src="/images/reeeaallll.png"
                 alt="Logo"
                 className="h-12 w-auto object-contain hover-scale transition-transform duration-300"
               />
@@ -107,9 +107,44 @@ const Footer = () => {
         </div>
         
         <div className="mt-12 pt-8 border-t border-green-400 text-center text-green-100 animate-fade-in opacity-0 animation-delay-1500">
-          <p className="text-lg transition-all duration-300 hover:text-white">{t.copyright}</p>
-        </div>
+           <div className="container mx-auto flex justify-center">
+        <div className="w-full flex justify-start">
+  {/* Facebook Icon */}
+  <a
+    href="https://www.facebook.com/profile.php?id=61560144595462" // replace with your link
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hover:text-blue-500 transition-colors ml-4"
+  >
+    <Facebook size={28} />
+  </a>
+  {/* Instagram Icon */}
+<a
+  href="https://www.instagram.com/realestatecrafters1/" // replace with your link
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-pink-500 transition-colors ml-4"
+>
+  <Instagram size={28} />
+</a>
+
+{/* YouTube Icon */}
+<a
+  href="https://www.youtube.com/@realestatecraftersinternationa" // replace with your link
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-red-600 transition-colors ml-4"
+>
+  <Youtube size={28} />
+</a>
+
+</div>
+
+
+</div>
       </div>
+          <p className="text-center  transition-all duration-300 hover:text-white">{t.copyright}</p>
+        </div>
     </footer>
   );
 };
